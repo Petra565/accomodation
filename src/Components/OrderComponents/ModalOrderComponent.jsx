@@ -14,13 +14,14 @@ import InputGroup from 'react-bootstrap/InputGroup';
 
 //Enums
 import LanguageEnum from '../../Enums/Languages'
+import CountryCodesEnum from '../../Enums/CountryCodes'
 
-function ModalCreateOrderComponent() {
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+import moment from 'moment';
+
+function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
     const [validated, setValidated] = useState(false);
-
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const [formData, setFormData] = useState({
         firstName: '',
@@ -41,44 +42,70 @@ function ModalCreateOrderComponent() {
         }));
     };
 
-
-
-
-
     const handleSubmit = async (event) => {
-        //const [response, setResponse] = useState('');
         const form = event.currentTarget;
         event.preventDefault();
 
         if (form.checkValidity() === false) {
             event.stopPropagation();
         } else {
-            await fetch('http://localhost:4000/order/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            }).then(response => {
-                console.log(response)
-            }).catch(error => {
-                console.error('Error:', error);
-            })
+            if (modalConfig.mode === "edit") {
+                await fetch('http://localhost:4000/order/edit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                }).then(response => {
+                    closeModal()
+                    reloadOrdersTable()
+                }).catch(error => {
+                    console.error('Error:', error);
+                })
+            }
+            else {
+                await fetch('http://localhost:4000/order/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                }).then(response => {
+                    closeModal()
+                    reloadOrdersTable()
+                }).catch(error => {
+                    console.error('Error:', error);
+                })
+            }
         }
-
         setValidated(true);
-
     };
+
+    useEffect(() => {
+        if (modalConfig.mode === "edit") {
+            fetch(`http://localhost:4000/order/get/${modalConfig.id}`)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not OK');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    setFormData(data);
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    setError(error);
+                    setLoading(false);
+                });
+        }
+    }, []);
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
-                Pridať objednávku
-            </Button>
-
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={true} onHide={closeModal}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Pridanie objednávky</Modal.Title>
+                    <Modal.Title> {modalConfig.mode === 'create' ? 'Pridanie ' : 'Úprava' } objednávky </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form id="FormAddOrder" noValidate validated={validated} onSubmit={handleSubmit}>
@@ -115,25 +142,29 @@ function ModalCreateOrderComponent() {
                         <Row className="mb-3">
                             <Form.Group as={Col} md="6" controlId="validationCustom03">
                                 <Form.Label>Národnosť</Form.Label>
-                                <Form.Control
+                                <Form.Select aria-label="Výber národnosti"
                                     required
-                                    type="text"
-                                    placeholder="Národnosť"
                                     name="nationality"
                                     value={formData.nationality}
                                     onChange={handleChange}
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    Zadaná hodnota je nesprávna.
-                                </Form.Control.Feedback>
+                                >
+                                    <option value="">Vyberte Národnosť</option>
+                                    {CountryCodesEnum.map((CountryCode) => (
+                                        <option key={CountryCode.value} value={CountryCode.value}>
+                                            {CountryCode.text}
+                                        </option>
+                                    ))}
+                                </Form.Select>
                             </Form.Group>
                             <Form.Group as={Col} md="6" controlId="validationCustom04">
+                                <Form.Label>Jazyk pre check-in</Form.Label>
                                 <Form.Select aria-label="Výber jazyka"
+                                    required
                                     name="note"
                                     value={formData.note}
                                     onChange={handleChange}
                                 >
-                                    <option value="">Vyber jazyk</option>
+                                    <option value="">Vyberte jazyk</option>
                                     {LanguageEnum.map((Language) => (
                                         <option key={Language.value} value={Language.value}>
                                             {Language.text}
@@ -149,7 +180,7 @@ function ModalCreateOrderComponent() {
                                     required
                                     type="date"
                                     name="arrivalDate"
-                                    value={formData.arrivalDate}
+                                    value={moment(formData.arrivalDate).format('yyyy-MM-DD')}
                                     onChange={handleChange}
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -162,7 +193,7 @@ function ModalCreateOrderComponent() {
                                     required
                                     type="date"
                                     name="departureDate"
-                                    value={formData.departureDate}
+                                    value={moment(formData.departureDate).format('yyyy-MM-DD')}
                                     onChange={handleChange}
                                 />
                                 <Form.Control.Feedback type="invalid">
@@ -205,7 +236,7 @@ function ModalCreateOrderComponent() {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={closeModal}>
                         Zavrieť
                     </Button>
                     <Button type="submit" form="FormAddOrder">
@@ -216,4 +247,4 @@ function ModalCreateOrderComponent() {
         </>
     );
 }
-export default ModalCreateOrderComponent
+export default ModalOrderComponent
