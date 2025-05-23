@@ -7,9 +7,8 @@
 .MainContainer {
 }
 
-.DetailIconMainTable {
+.DetailIconMainTable .DetailIconPriceListTable {
     cursor: pointer;
-   
 }
 
 .btnFilterMainTable{
