@@ -27,7 +27,7 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
     const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState('/MainInfo')
 
-    const [formData, setFormData] = useState({
+    const [mainFormData, setMainFormData] = useState({
         firstName: '',
         lastName: '',
         nationality: '',
@@ -35,16 +35,23 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
         arrivalDate: '',
         departureDate: '',
         numberOfGuests: '',
-        numberOfNights: ''
+        numberOfNights: '',
+        prices: []
     });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({
+        setMainFormData((prevData) => ({
             ...prevData,
             [name]: value
         }));
     };
+    const handleChangeData = (priceData) => {
+        setMainFormData({
+            ...mainFormData,
+            prices: priceData
+        })
+    }
 
     const handleSubmit = async (event) => {
         const form = event.currentTarget;
@@ -73,13 +80,15 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                     return response.json();
                 })
                 .then((data) => {
-                    setFormData(data);
+                    setMainFormData(data);
                     setLoading(false);
                 })
                 .catch((error) => {
                     setError(error);
                     setLoading(false);
                 });
+        } else {
+            setLoading(false);
         }
     }, []);
 
@@ -89,7 +98,7 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify(mainFormData),
         }).then(response => {
             closeModal()
             reloadOrdersTable()
@@ -104,154 +113,162 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                 <Modal.Header closeButton>
                     <Modal.Title> {modalConfig.mode === 'create' ? 'Pridanie ' : 'Úprava'} objednávky </Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    <Nav variant="tabs"
-                        defaultActiveKey="/MainInfo"
-                        onSelect={(selectedKey) => setActiveTab(selectedKey)}
-                    >
 
-                        <Nav.Item>
-                            <Nav.Link eventKey="/MainInfo">Základné údaje</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link eventKey="PriceList">Cenník</Nav.Link>
-                        </Nav.Item>
-                    </Nav>
+                {
+                    loading ? <>
+                        <span>Nacitavam</span>
+                    </> : <>
+                        <Modal.Body>
+                            <Nav variant="tabs"
+                                defaultActiveKey="/MainInfo"
+                                onSelect={(selectedKey) => setActiveTab(selectedKey)}
+                            >
 
-                    {activeTab === '/MainInfo' &&
-                        < Form id="FormAddOrder" noValidate validated={validated} onSubmit={handleSubmit}>
-                            <Row className="mb-3">
-                                <Form.Group as={Col} md="6" controlId="validationCustom01">
-                                    <Form.Label>Meno</Form.Label>
-                                    <Form.Control
-                                        required
-                                        type="text"
-                                        placeholder="Meno"
-                                        name="firstName"
-                                        value={formData.firstName}
-                                        onChange={handleChange}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        Zadaná hodnota je nesprávna.
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                                <Form.Group as={Col} md="6" controlId="validationCustom02">
-                                    <Form.Label>Priezvisko</Form.Label>
-                                    <Form.Control
-                                        required
-                                        type="text"
-                                        placeholder="Priezvisko"
-                                        name="lastName"
-                                        value={formData.lastName}
-                                        onChange={handleChange}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        Zadaná hodnota je nesprávna.
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                            </Row>
-                            <Row className="mb-3">
-                                <Form.Group as={Col} md="6" controlId="validationCustom03">
-                                    <Form.Label>Národnosť</Form.Label>
-                                    <Form.Select aria-label="Výber národnosti"
-                                        required
-                                        name="nationality"
-                                        value={formData.nationality}
-                                        onChange={handleChange}
-                                    >
-                                        <option value="">Vyberte Národnosť</option>
-                                        {CountryCodesEnum.map((CountryCode) => (
-                                            <option key={CountryCode.value} value={CountryCode.value}>
-                                                {CountryCode.text}
-                                            </option>
-                                        ))}
-                                    </Form.Select>
-                                </Form.Group>
-                                <Form.Group as={Col} md="6" controlId="validationCustom04">
-                                    <Form.Label>Jazyk pre check-in</Form.Label>
-                                    <Form.Select aria-label="Výber jazyka"
-                                        required
-                                        name="note"
-                                        value={formData.note}
-                                        onChange={handleChange}
-                                    >
-                                        <option value="">Vyberte jazyk</option>
-                                        {LanguageEnum.map((Language) => (
-                                            <option key={Language.value} value={Language.value}>
-                                                {Language.text}
-                                            </option>
-                                        ))}
-                                    </Form.Select>
-                                </Form.Group>
-                            </Row>
-                            <Row className="mb-3">
-                                <Form.Group as={Col} md="6" controlId="validationCustom05">
-                                    <Form.Label>Dátum príchodu</Form.Label>
-                                    <Form.Control
-                                        required
-                                        type="date"
-                                        name="arrivalDate"
-                                        value={moment(formData.arrivalDate).format('yyyy-MM-DD')}
-                                        onChange={handleChange}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        Zadaná hodnota je nesprávna.
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                                <Form.Group as={Col} md="6" controlId="validationCustom06">
-                                    <Form.Label>Dátum odchodu</Form.Label>
-                                    <Form.Control
-                                        required
-                                        type="date"
-                                        name="departureDate"
-                                        value={moment(formData.departureDate).format('yyyy-MM-DD')}
-                                        onChange={handleChange}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        Zadaná hodnota je nesprávna.
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                            </Row>
-                            <Row className="mb-3">
-                                <Form.Group as={Col} md="6" controlId="validationCustom07">
-                                    <Form.Label>Počet hostí</Form.Label>
-                                    <Form.Control
-                                        type="number"
-                                        step="1"
-                                        min="0"
-                                        required
-                                        name="numberOfGuests"
-                                        value={formData.numberOfGuests}
-                                        onChange={handleChange}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        Zadaná hodnota je nesprávna.
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                                <Form.Group as={Col} md="6" controlId="validationCustom08">
-                                    <Form.Label>Počet nocí</Form.Label>
-                                    <Form.Control
-                                        type="number"
-                                        step="1"
-                                        min="0"
-                                        required
-                                        name="numberOfNights"
-                                        value={formData.numberOfNights}
-                                        onChange={handleChange}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        Zadaná hodnota je nesprávna.
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                            </Row>
-                        </Form>
-                    }
-                    {activeTab === 'PriceList' &&
-                        <PriceListComponent
-                        formData={formData}
-                        />
-                    }
-                </Modal.Body>
+                                <Nav.Item>
+                                    <Nav.Link eventKey="/MainInfo">Základné údaje</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item>
+                                    <Nav.Link eventKey="PriceList">Cenník</Nav.Link>
+                                </Nav.Item>
+                            </Nav>
+
+                            <Form id="FormAddOrder" noValidate validated={validated} onSubmit={handleSubmit} className={activeTab === '/MainInfo' ? 'd-block' : 'd-none'}>
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} md="6" controlId="validationCustom01">
+                                        <Form.Label>Meno</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="text"
+                                            placeholder="Meno"
+                                            name="firstName"
+                                            value={mainFormData.firstName}
+                                            onChange={handleChange}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            Zadaná hodnota je nesprávna.
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group as={Col} md="6" controlId="validationCustom02">
+                                        <Form.Label>Priezvisko</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="text"
+                                            placeholder="Priezvisko"
+                                            name="lastName"
+                                            value={mainFormData.lastName}
+                                            onChange={handleChange}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            Zadaná hodnota je nesprávna.
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+                                </Row>
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} md="6" controlId="validationCustom03">
+                                        <Form.Label>Národnosť</Form.Label>
+                                        <Form.Select aria-label="Výber národnosti"
+                                            required
+                                            name="nationality"
+                                            value={mainFormData.nationality}
+                                            onChange={handleChange}
+                                        >
+                                            <option value="">Vyberte Národnosť</option>
+                                            {CountryCodesEnum.map((CountryCode) => (
+                                                <option key={CountryCode.value} value={CountryCode.value}>
+                                                    {CountryCode.text}
+                                                </option>
+                                            ))}
+                                        </Form.Select>
+                                    </Form.Group>
+                                    <Form.Group as={Col} md="6" controlId="validationCustom04">
+                                        <Form.Label>Jazyk pre check-in</Form.Label>
+                                        <Form.Select aria-label="Výber jazyka"
+                                            required
+                                            name="note"
+                                            value={mainFormData.note}
+                                            onChange={handleChange}
+                                        >
+                                            <option value="">Vyberte jazyk</option>
+                                            {LanguageEnum.map((Language) => (
+                                                <option key={Language.value} value={Language.value}>
+                                                    {Language.text}
+                                                </option>
+                                            ))}
+                                        </Form.Select>
+                                    </Form.Group>
+                                </Row>
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} md="6" controlId="validationCustom05">
+                                        <Form.Label>Dátum príchodu</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="date"
+                                            name="arrivalDate"
+                                            value={moment(mainFormData.arrivalDate).format('yyyy-MM-DD')}
+                                            onChange={handleChange}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            Zadaná hodnota je nesprávna.
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group as={Col} md="6" controlId="validationCustom06">
+                                        <Form.Label>Dátum odchodu</Form.Label>
+                                        <Form.Control
+                                            required
+                                            type="date"
+                                            name="departureDate"
+                                            value={moment(mainFormData.departureDate).format('yyyy-MM-DD')}
+                                            onChange={handleChange}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            Zadaná hodnota je nesprávna.
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+                                </Row>
+                                <Row className="mb-3">
+                                    <Form.Group as={Col} md="6" controlId="validationCustom07">
+                                        <Form.Label>Počet hostí</Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            step="1"
+                                            min="0"
+                                            required
+                                            name="numberOfGuests"
+                                            value={mainFormData.numberOfGuests}
+                                            onChange={handleChange}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            Zadaná hodnota je nesprávna.
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group as={Col} md="6" controlId="validationCustom08">
+                                        <Form.Label>Počet nocí</Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            step="1"
+                                            min="0"
+                                            required
+                                            name="numberOfNights"
+                                            value={mainFormData.numberOfNights}
+                                            onChange={handleChange}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            Zadaná hodnota je nesprávna.
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+                                </Row>
+                            </Form>
+
+                            <div className={activeTab === 'PriceList' ? 'd-block' : 'd-none'}>
+                                <PriceListComponent
+                                    mainFormData={mainFormData}
+                                    changeData={(priceData) => handleChangeData(priceData)}
+                                />
+                            </div>
+                        </Modal.Body>
+                    </>
+                }
+
 
                 <Modal.Footer>
                     <Button variant="secondary" onClick={closeModal}>

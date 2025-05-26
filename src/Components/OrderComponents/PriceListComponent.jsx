@@ -12,14 +12,37 @@ import Nav from 'react-bootstrap/Nav';
 import Table from 'react-bootstrap/Table';
 
 
-function PriceListComponent() {
+function PriceListComponent({ changeData, mainFormData }) {
 
     const [priceData, setPriceData] = useState([]);
     const [priceModalConfig, setPriceModalConfig] = useState({ show: false });
 
+    useEffect(() => {
+        setPriceData(mainFormData.prices);
+    }, []);
+
+    const savePriceDataHandler = (data) => {
+        if (priceModalConfig.mode == 'edit') {
+            let priceDataCopy = [...priceData];
+
+            priceDataCopy[priceModalConfig.index] = data;
+
+            setPriceData(priceDataCopy)
+
+        }
+        else {
+            setPriceData([...priceData, data])
+        }
+
+    }
+
+    useEffect(() => {
+        changeData(priceData);
+    }, [priceData]);
+
     return (
         <>
-            <Table striped bordered hover>
+            <Table striped bordered hover size="sm">
                 <thead>
                     <tr>
                         <th>Typ</th>
@@ -44,7 +67,7 @@ function PriceListComponent() {
                                 <td>{price.priceNote}</td>
                                 <td>
                                     <span className="DetailIconPriceListTable"
-                                        onClick={() => setPriceModalConfig({ show: true, mode: 'edit', id: price._id })}>
+                                        onClick={() => setPriceModalConfig({ show: true, mode: 'edit', data: price, index: i })}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="MainTableIcon bi bi-list-ul" viewBox="0 0 16 16">
                                             <path fillRule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
                                         </svg>
@@ -64,7 +87,7 @@ function PriceListComponent() {
                 priceModalConfig.show && (
                     <PriceItemModalComponent
                         modalConfig={priceModalConfig}
-                        savePriceData={(data) => console.log(data)}
+                        savePriceData={(data) => savePriceDataHandler(data)}
                         closeModal={() => setPriceModalConfig({ show: false })}
                     ></PriceItemModalComponent>
                 )

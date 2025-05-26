@@ -22,6 +22,12 @@ function PriceItemModalComponent({ modalConfig, closeModal, savePriceData }) {
         serviceFeeGuest: '',
         serviceFeeHost: '',
     });
+
+    useEffect(() => {
+        if (modalConfig.mode == 'edit') {
+            setPriceFormData(modalConfig.data)
+        }
+    }, []);
    
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -40,12 +46,12 @@ function PriceItemModalComponent({ modalConfig, closeModal, savePriceData }) {
 
     return (
         <>
-            <Modal show={true} onHide={closeModal}>
+            <Modal show={true} onHide={closeModal} size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title>Pridanie cenovej položky</Modal.Title>
+                    <Modal.Title>{modalConfig.mode === 'create' ? 'Pridanie ' : 'Úprava'} cenovej položky</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form id="FormAddOrder" noValidate validated={validated} onSubmit={(e) => submitForm(e)}>
+                    <Form id="FormAddPrice" noValidate validated={validated} onSubmit={(e) => submitForm(e)}>
                         <Row className="mb-3">
                             <Form.Group as={Col} md="12" controlId="validationCustom01">
                                 <Form.Label>Typ</Form.Label>
@@ -149,7 +155,7 @@ function PriceItemModalComponent({ modalConfig, closeModal, savePriceData }) {
                     <Button variant="secondary" onClick={closeModal}>
                         Zavrieť
                     </Button>
-                    <Button type="submit" form="FormAddOrder">
+                    <Button type="submit" form="FormAddPrice">
                         Uložiť
                     </Button>
                 </Modal.Footer>
