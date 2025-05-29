@@ -9,7 +9,42 @@ import 'moment/locale/sk'
 moment.locale('sk')
 const localizer = momentLocalizer(moment)
 
-function CalendarComponent({ data }) {
+function CalendarComponent() {
+
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        loadOrdersData();
+    }, []);
+
+    const loadOrdersData = (filterPayload = {}) => {
+        const queryParams = new URLSearchParams(filterPayload).toString();
+        const url = `http://localhost:4000/order/list?${queryParams}`;
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not OK');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setData(data.orders);
+                setLoading(false);
+
+            })
+            .catch((error) => {
+                setError(error);
+                setLoading(false);
+            });
+    }
     const getState = (order) => {
         if (!order) return;
         const now = new Date();

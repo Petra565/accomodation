@@ -10,6 +10,8 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Nav from 'react-bootstrap/Nav';
+import Badge from 'react-bootstrap/Badge';
+import Stack from 'react-bootstrap/Stack';
 
 //DatePicker
 import DatePicker from 'react-datepicker';
@@ -120,15 +122,15 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
 
             setMainFormData(prev => ({
                 ...prev,
-                numberOfNights:nights
+                numberOfNights: nights
             }))
-        }else {
+        } else {
             setMainFormData(prev => ({
                 ...prev,
                 numberOfNights: 0
-        }));
-    }
-}, [mainFormData.arrivalDate, mainFormData.departureDate])
+            }));
+        }
+    }, [mainFormData.arrivalDate, mainFormData.departureDate])
 
     return (
         <>
@@ -152,6 +154,9 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                                 </Nav.Item>
                                 <Nav.Item>
                                     <Nav.Link eventKey="PriceList">Cenník</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item>
+                                    <Nav.Link eventKey="CheckInData">Check-in</Nav.Link>
                                 </Nav.Item>
                             </Nav>
 
@@ -287,6 +292,17 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                                     mainFormData={mainFormData}
                                     changeData={(priceData) => handleChangeData(priceData)}
                                 />
+                            </div>
+                                <div className={activeTab === 'CheckInData' ? 'd-block' : 'd-none'}>
+                                    <Row>
+                                        <Col-2>
+                                            <Badge className="m-2" bg='danger'>Neprijate udaje</Badge>
+                                        </Col-2>
+
+                                    </Row>
+
+                                <Button className="m-2" variant="primary">Odkaz na formular</Button>
+                                <Button className="m-2" variant="secondary">Oznacit ako vybaveny</Button>
                             </div>
                         </Modal.Body>
                     </>

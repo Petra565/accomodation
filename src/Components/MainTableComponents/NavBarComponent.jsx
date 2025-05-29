@@ -7,10 +7,10 @@ function NavBarComponent() {
     return (
         <Navbar bg="light" expand="lg">
             <Container>
-                <Navbar.Brand as={NavLink} to="/">Zoznam objednávok</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
+                        <Nav.Link as={NavLink} to="/">Zoznam objednávok</Nav.Link>
                         <Nav.Link as={NavLink} to="/calendar">Kalendár</Nav.Link>
                         <Nav.Link as={NavLink} to="/statistics">Štatistiky</Nav.Link>
                         <Nav.Link as={NavLink} to="/admin">Admin</Nav.Link>
