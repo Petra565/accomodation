@@ -12,8 +12,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Nav from 'react-bootstrap/Nav';
 
 //DatePicker
-//import DatePicker from 'react-datepicker';
-//import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from 'react-datepicker';
 
 //Enums
 import LanguageEnum from '../../Enums/Languages'
@@ -51,6 +50,7 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
             ...mainFormData,
             prices: priceData
         })
+
     }
 
     const handleSubmit = async (event) => {
@@ -106,6 +106,29 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
             console.error('Error:', error);
         })
     }
+    useEffect(() => {
+
+        if (mainFormData.arrivalDate && mainFormData.departureDate) {
+            const start = new Date(mainFormData.arrivalDate);
+            start.setHours(0, 0, 0, 0);
+            const end = new Date(mainFormData.departureDate);
+            end.setHours(0, 0, 0, 0);
+
+            const diffInMs = end - start;
+            const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+            const nights = Math.max(0, Math.round(diffInDays))
+
+            setMainFormData(prev => ({
+                ...prev,
+                numberOfNights:nights
+            }))
+        }else {
+            setMainFormData(prev => ({
+                ...prev,
+                numberOfNights: 0
+        }));
+    }
+}, [mainFormData.arrivalDate, mainFormData.departureDate])
 
     return (
         <>
@@ -200,25 +223,26 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} md="6" controlId="validationCustom05">
                                         <Form.Label>Dátum príchodu</Form.Label>
-                                        <Form.Control
-                                            required
-                                            type="date"
-                                            name="arrivalDate"
-                                            value={moment(mainFormData.arrivalDate).format('yyyy-MM-DD')}
-                                            onChange={handleChange}
+                                        <DatePicker
+                                            className="datePicker"
+                                            selected={mainFormData.arrivalDate}
+                                            onChange={(date) => handleChange({ target: { value: date, name: 'arrivalDate' } })}
+                                            dateFormat="dd.MM.yyyy"
+                                            placeholderText="Klikni pre výber dátumu"
                                         />
+
                                         <Form.Control.Feedback type="invalid">
                                             Zadaná hodnota je nesprávna.
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                     <Form.Group as={Col} md="6" controlId="validationCustom06">
                                         <Form.Label>Dátum odchodu</Form.Label>
-                                        <Form.Control
-                                            required
-                                            type="date"
-                                            name="departureDate"
-                                            value={moment(mainFormData.departureDate).format('yyyy-MM-DD')}
-                                            onChange={handleChange}
+                                        <DatePicker
+                                            className="datePicker"
+                                            selected={mainFormData.departureDate}
+                                            onChange={(date) => handleChange({ target: { value: date, name: 'departureDate' } })}
+                                            dateFormat="dd.MM.yyyy"
+                                            placeholderText="Klikni pre výber dátumu"
                                         />
                                         <Form.Control.Feedback type="invalid">
                                             Zadaná hodnota je nesprávna.
@@ -247,10 +271,9 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                                             type="number"
                                             step="1"
                                             min="0"
-                                            required
+                                            disabled
                                             name="numberOfNights"
                                             value={mainFormData.numberOfNights}
-                                            onChange={handleChange}
                                         />
                                         <Form.Control.Feedback type="invalid">
                                             Zadaná hodnota je nesprávna.
