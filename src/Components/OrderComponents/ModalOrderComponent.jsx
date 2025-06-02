@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import PriceListComponent from './PriceListComponent.jsx'
+import PriceListComponent from './PriceComponents/PriceListComponent.jsx'
+import CheckInComponent from './CheckInComponents/CheckInComponent.jsx'
 
 
 //Bootstrap
@@ -10,8 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Nav from 'react-bootstrap/Nav';
-import Badge from 'react-bootstrap/Badge';
-import Stack from 'react-bootstrap/Stack';
+
 
 //DatePicker
 import DatePicker from 'react-datepicker';
@@ -104,6 +104,7 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
         }).then(response => {
             closeModal()
             reloadOrdersTable()
+            console.log(response)
         }).catch(error => {
             console.error('Error:', error);
         })
@@ -155,9 +156,11 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                                 <Nav.Item>
                                     <Nav.Link eventKey="PriceList">Cenník</Nav.Link>
                                 </Nav.Item>
-                                <Nav.Item>
-                                    <Nav.Link eventKey="CheckInData">Check-in</Nav.Link>
-                                </Nav.Item>
+                                {modalConfig?.mode === 'edit' && (
+                                    <Nav.Item>
+                                        <Nav.Link eventKey="CheckInData">Check-in</Nav.Link>
+                                    </Nav.Item>
+                                )}
                             </Nav>
 
                             <Form id="FormAddOrder" noValidate validated={validated} onSubmit={handleSubmit} className={activeTab === '/MainInfo' ? 'd-block' : 'd-none'}>
@@ -293,16 +296,12 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                                     changeData={(priceData) => handleChangeData(priceData)}
                                 />
                             </div>
-                                <div className={activeTab === 'CheckInData' ? 'd-block' : 'd-none'}>
-                                    <Row>
-                                        <Col-2>
-                                            <Badge className="m-2" bg='danger'>Neprijate udaje</Badge>
-                                        </Col-2>
-
-                                    </Row>
-
-                                <Button className="m-2" variant="primary">Odkaz na formular</Button>
-                                <Button className="m-2" variant="secondary">Oznacit ako vybaveny</Button>
+                            <div className={activeTab === 'CheckInData' ? 'd-block' : 'd-none'}>
+                                <CheckInComponent
+                                    orderData={mainFormData}
+                                    sendChangedDataFromCheckInTab={(data) => setMainFormData(data)}
+                                >
+                                </CheckInComponent>
                             </div>
                         </Modal.Body>
                     </>

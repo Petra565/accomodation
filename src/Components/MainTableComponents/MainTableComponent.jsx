@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import ModalOrderComponent from '../OrderComponents/ModalOrderComponent.jsx'
 import OrderFilterComponent from '../MainTableComponents/OrderFilterComponent.jsx'
+import NavBarComponent from '../MainTableComponents/NavBarComponent.jsx';
+
 import Table from 'react-bootstrap/Table';
 import Badge from 'react-bootstrap/Badge';
 import Stack from 'react-bootstrap/Stack';
@@ -14,7 +16,7 @@ import PriceTypeEnum from '../../Enums/PriceTypeEnum';
 import moment from 'moment';
 import Modal from 'react-bootstrap/Modal';
 
-function MainTableComponent({ sendCalendarData }) {
+function MainTableComponent() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -43,7 +45,6 @@ function MainTableComponent({ sendCalendarData }) {
             .then((data) => {
                 setData(data.orders);
                 setLoading(false);
-                sendCalendarData(data.orders)
 
             })
             .catch((error) => {
@@ -96,6 +97,8 @@ function MainTableComponent({ sendCalendarData }) {
 
     return (
         <>
+            <NavBarComponent />
+
             <div className="MainContainer px-4">
 
                 {orderModalConfig.show && (

@@ -10,5 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\Components\ChartComponents\" />
+    <Folder Include="src\Components\CommonComponents\" />
+    <Folder Include="src\Components\CheckInFormComponents\" />
   </ItemGroup>
 </Project>

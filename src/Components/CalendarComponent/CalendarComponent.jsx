@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import Button from 'react-bootstrap/Button';
+import NavBarComponent from '../MainTableComponents/NavBarComponent.jsx';
+
 
 //Calendar
 import { Calendar, momentLocalizer } from 'react-big-calendar';
@@ -89,7 +91,10 @@ function CalendarComponent() {
 
     return (
         <>
+            <NavBarComponent />
+
             <div style={{ height: 600 }}>
+
                 <Calendar
                     localizer={localizer}
                     events={events}

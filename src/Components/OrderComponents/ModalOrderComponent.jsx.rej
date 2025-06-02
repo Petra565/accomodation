@@ -1,0 +1,9 @@
+diff a/src/Components/OrderComponents/ModalOrderComponent.jsx b/src/Components/OrderComponents/ModalOrderComponent.jsx	(rejected hunks)
+@@ -86,6 +86,7 @@
+                 .then((data) => {
+                     setMainFormData(data);
+                     setLoading(false);
++                    setOrderId(data._id)
+ 
+                 })
+                 .catch((error) => {

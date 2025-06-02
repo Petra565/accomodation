@@ -9,7 +9,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Nav from 'react-bootstrap/Nav';
 import Table from 'react-bootstrap/Table';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import PriceTypeEnum from '../../Enums/PriceTypeEnum';
+import PriceTypeEnum from '../../../Enums/PriceTypeEnum';
 
 function PriceItemModalComponent({ modalConfig, closeModal, savePriceData }) {
     const [validated, setValidated] = useState(false);
