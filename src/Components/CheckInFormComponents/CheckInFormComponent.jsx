@@ -19,9 +19,9 @@ import DocumentTypeEpsum from '../../Enums/DocumentTypeEpsum'
 
 import moment from 'moment';
 
-function CheckInFormComponent() {
+function CheckInFormComponent({ index, sendNewGuestData }) {
     const [validated, setValidated] = useState(false);
-    const [guestData, setGuestData] = useState(
+    const [newGuestData, setNewGuestData] = useState(
         {
             firstName: '',
             lastName: '',
@@ -38,30 +38,35 @@ function CheckInFormComponent() {
             },
         },
     )
+    useEffect(() => {
+        sendNewGuestData(newGuestData)
+    }, [newGuestData])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setGuestData((prevData) => ({
+        setNewGuestData((prevData) => ({
             ...prevData,
             [name]: value
         }));
     };
 
+    const handleAddressChange = (e) => {
+        const { name, value } = e.target;
+        setNewGuestData(prevData => ({
+            ...prevData,
+            address: {
+                ...prevData.address,
+                [name]: value,
+            },
+        }));
+    }
 
-    const handleSubmit = async (event) => {
-        const form = event.currentTarget;
-        event.preventDefault();
-
-        if (form.checkValidity() === false) {
-            event.stopPropagation();
-        }
-        setValidated(true);
-    };
+    
 
     return (
         <>
-            <Form className="p-4" id="FormCheckInByGuest" noValidate validated={validated} onSubmit={handleSubmit}>
-                <h6>1.Osoba-Objednávateľ</h6>
+            <div className="border p-4 rounded mb-4">
+                <h6>{index + 1}.Osoba{index + 1 === 1 && '- Objednávateľ'}</h6>
                 <Row className="mb-3">
                     <Form.Group as={Col} md="6" controlId="validationCustom01">
                         <Form.Label>Meno</Form.Label>
@@ -70,7 +75,7 @@ function CheckInFormComponent() {
                             type="text"
                             placeholder="Meno"
                             name="firstName"
-                            value={guestData.firstName}
+                            value={newGuestData.firstName}
                             onChange={handleChange}
                         />
                         <Form.Control.Feedback type="invalid">
@@ -84,7 +89,7 @@ function CheckInFormComponent() {
                             type="text"
                             placeholder="Priezvisko"
                             name="lastName"
-                            value={guestData.lastName}
+                            value={newGuestData.lastName}
                             onChange={handleChange}
                         />
                         <Form.Control.Feedback type="invalid">
@@ -98,7 +103,7 @@ function CheckInFormComponent() {
                         <Form.Select aria-label="Výber národnosti"
                             required
                             name="nationality"
-                            value={guestData.nationality}
+                            value={newGuestData.nationality}
                             onChange={handleChange}
                         >
                             <option value="">Vyberte národnosť</option>
@@ -113,7 +118,7 @@ function CheckInFormComponent() {
                         <Form.Label>Dátum narodenia</Form.Label>
                         <DatePicker
                             className="datePicker"
-                            selected={guestData.dateOfBirth}
+                            selected={newGuestData.dateOfBirth}
                             onChange={(date) => handleChange({ target: { value: date, name: 'dateOfBirth' } })}
                             dateFormat="dd.MM.yyyy"
                             placeholderText="Klikni pre výber dátumu"
@@ -130,7 +135,7 @@ function CheckInFormComponent() {
                         <Form.Select aria-label="Výber národnosti"
                             required
                             name="documentType"
-                            value={guestData.documentType}
+                            value={newGuestData.documentType}
                             onChange={handleChange}
                         >
                             <option value="">Vyberte typ dokumentu</option>
@@ -148,7 +153,7 @@ function CheckInFormComponent() {
                             type="number"
                             placeholder="Číslo doladu"
                             name="documentNumber"
-                            value={guestData.documentNumber}
+                            value={newGuestData.documentNumber}
                             onChange={handleChange}
                         />
 
@@ -166,8 +171,8 @@ function CheckInFormComponent() {
                             type="text"
                             placeholder="Ulica"
                             name="street"
-                            value={guestData.address.street}
-                            onChange={handleChange}
+                            value={newGuestData.address.street}
+                            onChange={handleAddressChange}
                         />
                         <Form.Control.Feedback type="invalid">
                             Zadaná hodnota je nesprávna.
@@ -182,8 +187,8 @@ function CheckInFormComponent() {
                             placeholder="Číslo domu"
                             required
                             name="houseNumber"
-                            value={guestData.address.houseNumber}
-                            onChange={handleChange}
+                            value={newGuestData.address.houseNumber}
+                            onChange={handleAddressChange}
                         />
                         <Form.Control.Feedback type="invalid">
                             Zadaná hodnota je nesprávna.
@@ -198,8 +203,8 @@ function CheckInFormComponent() {
                             type="text"
                             placeholder="Štát"
                             name="country"
-                            value={guestData.address.country}
-                            onChange={handleChange}
+                            value={newGuestData.address.country}
+                            onChange={handleAddressChange}
                         />
                         <Form.Control.Feedback type="invalid">
                             Zadaná hodnota je nesprávna.
@@ -214,8 +219,8 @@ function CheckInFormComponent() {
                             type="text"
                             placeholder="Mesto"
                             name="city"
-                            value={guestData.address.city}
-                            onChange={handleChange}
+                            value={newGuestData.address.city}
+                            onChange={handleAddressChange}
                         />
                         <Form.Control.Feedback type="invalid">
                             Zadaná hodnota je nesprávna.
@@ -228,15 +233,15 @@ function CheckInFormComponent() {
                             type="text"
                             placeholder="PSČ"
                             name="postalCode"
-                            value={guestData.address.postalCode}
-                            onChange={handleChange}
+                            value={newGuestData.address.postalCode}
+                            onChange={handleAddressChange}
                         />
                         <Form.Control.Feedback type="invalid">
                             Zadaná hodnota je nesprávna.
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Row>
-            </Form >
+            </div>
         </>
     );
 }
