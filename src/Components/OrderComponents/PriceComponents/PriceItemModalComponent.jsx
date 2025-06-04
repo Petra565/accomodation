@@ -8,8 +8,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Nav from 'react-bootstrap/Nav';
 import Table from 'react-bootstrap/Table';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import PriceTypeEnum from '../../../Enums/PriceTypeEnum';
+import PriceTypeEnum from '../../../Enums/PriceType';
 
 function PriceItemModalComponent({ modalConfig, closeModal, savePriceData }) {
     const [validated, setValidated] = useState(false);
@@ -137,7 +136,6 @@ function PriceItemModalComponent({ modalConfig, closeModal, savePriceData }) {
                         </Row>
                         <Row className="mb-6">
                             <Form.Label>Poznámka</Form.Label>
-                            <FloatingLabel controlId="floatingTextarea2">
                                 <Form.Control
                                     as="textarea"
                                     name="priceNote"
@@ -146,7 +144,6 @@ function PriceItemModalComponent({ modalConfig, closeModal, savePriceData }) {
                                     onChange={handleChange}
                                     value={priceFormData.priceNote}
                                 />
-                            </FloatingLabel>
                         </Row>
                     </Form>
                 </Modal.Body>

@@ -19,7 +19,6 @@ function CheckInFormContainerComponent() {
     const [validated, setValidated] = useState(false);
 
     const [orderData, setOrderData] = useState([])
-    const [numberOfGuests, setNumberOfGuests] = useState(0)
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { id } = useParams();
@@ -164,7 +163,7 @@ function CheckInFormContainerComponent() {
                         </Row>
                         <Row className="mb-1">
                             <Form.Group as={Col}>
-                                <Form.Check // prettier-ignore
+                                <Form.Check
                                     type='checkbox'
                                     id="default-checkbox"
                                     label='Súhlasím so spracovaním osobných údajov'

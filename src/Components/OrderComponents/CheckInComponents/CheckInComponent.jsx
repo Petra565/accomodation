@@ -61,21 +61,36 @@ function CheckInComponent({ orderData, sendChangedDataFromCheckInTab }) {
         <>
             <Row>
                 <Col-2>
-                    <Badge className="m-2" bg='danger'>{orderData.checkInData?.state}</Badge>
+                    {
+                        orderData.checkInData?.state == 'notFinished' &&
+                        <Badge className="mt-3 mx-2 fs-6 px-3 py-2" bg='danger'>Neprijaté údaje</Badge>
+                    }
+                    {
+                        orderData.checkInData?.state == 'finishedByHost' &&
+                        <Badge className="mt-3 mx-2 fs-6 px-3 py-2" bg='success'>Vyplnené hostiteľom</Badge>
+                    }
+                    {
+                        orderData.checkInData?.state == 'finishedByGuest' &&
+                        <Badge className="mt-3 mx-2 fs-6 px-3 py-2" bg='success'>Vyplnené hosťom</Badge>
+                    }
                 </Col-2>
             </Row>
-
-            <Button className="m-2"
-                variant="secondary"
-                onClick={handleClick}
-            >
-                Odkaz na formular</Button>
-            <Button
-                className="m-2"
-                variant="primary"
-                onClick={handleDoneCheckIn}
-            >
-                Oznacit ako vybaveny</Button>
+            {
+                orderData.checkInData?.state == 'notFinished' &&
+                <>
+                    <Button className="m-2"
+                        variant="secondary"
+                        onClick={handleClick}
+                    >
+                        Odkaz na formulár</Button>
+                    <Button
+                        className="m-2"
+                        variant="primary"
+                        onClick={handleDoneCheckIn}
+                    >
+                        Označiť ako vybavený</Button>
+                </>
+            }
 
             <UniversalModalComponent
                 modalConfig={modalConfig}

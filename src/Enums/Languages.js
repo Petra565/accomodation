@@ -1,5 +1,9 @@
 const languages = [
     {
+        "value": null,
+        "text": ""
+    },
+    {
         value: 'SK',
         text: 'Slovenský'
     },

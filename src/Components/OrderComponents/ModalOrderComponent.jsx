@@ -170,7 +170,6 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                                         <Form.Control
                                             required
                                             type="text"
-                                            placeholder="Meno"
                                             name="firstName"
                                             value={mainFormData.firstName}
                                             onChange={handleChange}
@@ -184,7 +183,6 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                                         <Form.Control
                                             required
                                             type="text"
-                                            placeholder="Priezvisko"
                                             name="lastName"
                                             value={mainFormData.lastName}
                                             onChange={handleChange}
@@ -203,7 +201,6 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                                             value={mainFormData.nationality}
                                             onChange={handleChange}
                                         >
-                                            <option value="">Vyberte Národnosť</option>
                                             {CountryCodesEnum.map((CountryCode) => (
                                                 <option key={CountryCode.value} value={CountryCode.value}>
                                                     {CountryCode.text}
@@ -219,7 +216,6 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                                             value={mainFormData.note}
                                             onChange={handleChange}
                                         >
-                                            <option value="">Vyberte jazyk</option>
                                             {LanguageEnum.map((Language) => (
                                                 <option key={Language.value} value={Language.value}>
                                                     {Language.text}
@@ -236,7 +232,7 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                                             selected={mainFormData.arrivalDate}
                                             onChange={(date) => handleChange({ target: { value: date, name: 'arrivalDate' } })}
                                             dateFormat="dd.MM.yyyy"
-                                            placeholderText="Klikni pre výber dátumu"
+                                            placeholderText="Kliknite pre výber dátumu"
                                         />
 
                                         <Form.Control.Feedback type="invalid">
@@ -250,7 +246,7 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                                             selected={mainFormData.departureDate}
                                             onChange={(date) => handleChange({ target: { value: date, name: 'departureDate' } })}
                                             dateFormat="dd.MM.yyyy"
-                                            placeholderText="Klikni pre výber dátumu"
+                                            placeholderText="Kliknite pre výber dátumu"
                                         />
                                         <Form.Control.Feedback type="invalid">
                                             Zadaná hodnota je nesprávna.

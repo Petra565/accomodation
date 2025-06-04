@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
-import PriceTypeEnum from '../../Enums/PriceTypeEnum';
+import PriceTypeEnum from '../../Enums/PriceType';
 
 import moment from 'moment';
 

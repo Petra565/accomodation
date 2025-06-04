@@ -1,5 +1,9 @@
 ﻿const DocumentTypeEpsum = [
     {
+        "text": "",
+        "value": null
+    },
+    {
         "text": "Občiansky preukaz",
         "value": "1"
     },

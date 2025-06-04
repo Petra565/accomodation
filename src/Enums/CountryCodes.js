@@ -1,5 +1,8 @@
 ﻿const countryCodes = [
     {
+        "text": "",
+        "value": null
+    },{
         "text": "Afghanistan",
         "value": "AF"
     },
