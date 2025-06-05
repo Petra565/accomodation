@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import ModalOrderComponent from '../OrderComponents/ModalOrderComponent.jsx'
 import OrderFilterComponent from '../MainTableComponents/OrderFilterComponent.jsx'
 import NavBarComponent from '../MainTableComponents/NavBarComponent.jsx';
+import { orderList } from '../Services/OrderServices.js';
+
 
 import Table from 'react-bootstrap/Table';
 import Badge from 'react-bootstrap/Badge';
@@ -11,7 +13,6 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import PriceTypeEnum from '../../Enums/PriceType.js';
-
 
 import moment from 'moment';
 import Modal from 'react-bootstrap/Modal';
@@ -27,25 +28,13 @@ function MainTableComponent() {
     }, []);
 
     const loadOrdersData = (filterPayload = {}) => {
+        //vyskladane filtracne parametre pre order list
         const queryParams = new URLSearchParams(filterPayload).toString();
-        const url = `http://localhost:4000/order/list?${queryParams}`;
 
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not OK');
-                }
-                return response.json();
-            })
+        orderList(queryParams)
             .then((data) => {
                 setData(data.orders);
                 setLoading(false);
-
             })
             .catch((error) => {
                 setError(error);
@@ -203,7 +192,7 @@ function MainTableComponent() {
                                             )
 
                                         }
-                                        
+
                                     </td>
                                     <td>
                                         {

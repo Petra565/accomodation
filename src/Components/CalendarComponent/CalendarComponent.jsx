@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Button from 'react-bootstrap/Button';
 import NavBarComponent from '../MainTableComponents/NavBarComponent.jsx';
+import { orderList } from '../Services/OrderServices.js';
 
 
 //Calendar
@@ -21,22 +22,8 @@ function CalendarComponent() {
         loadOrdersData();
     }, []);
 
-    const loadOrdersData = (filterPayload = {}) => {
-        const queryParams = new URLSearchParams(filterPayload).toString();
-        const url = `http://localhost:4000/order/list?${queryParams}`;
-
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not OK');
-                }
-                return response.json();
-            })
+    const loadOrdersData = () => {
+        orderList()
             .then((data) => {
                 setData(data.orders);
                 setLoading(false);

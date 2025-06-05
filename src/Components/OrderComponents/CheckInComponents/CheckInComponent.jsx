@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { orderEditState } from '../../Services/CheckInServices'
 import UniversalModalComponent from '../../CommonComponents/UniversalModalComponent.jsx'
 import Badge from 'react-bootstrap/Badge';
 import Stack from 'react-bootstrap/Stack';
@@ -33,24 +34,14 @@ function CheckInComponent({ orderData, sendChangedDataFromCheckInTab }) {
     }
 
     const changeCheckInState = (orderData) => {
-        fetch(`http://localhost:4000/checkIn/markAsFinishedByHost`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(orderData),
-        }).then((response) => {
-            if (!response.ok) {
-                throw new Error('Network response was not OK');
-            }
-            return response.json();
-        }).then(data => {
-            sendChangedDataFromCheckInTab(data.order);
-            console.log(data.order)
+        orderEditState(orderData)
+            .then(data => {
+                sendChangedDataFromCheckInTab(data.order);
+                console.log(data.order)
 
-        }).catch(error => {
-            console.error('Error:', error);
-        })
+            }).catch(error => {
+                console.error('Error:', error);
+            })
     }
 
     const handleClick = () => {
@@ -91,7 +82,6 @@ function CheckInComponent({ orderData, sendChangedDataFromCheckInTab }) {
                         Označiť ako vybavený</Button>
                 </>
             }
-
             <UniversalModalComponent
                 modalConfig={modalConfig}
             >

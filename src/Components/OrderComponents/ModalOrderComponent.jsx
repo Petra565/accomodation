@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { orderGet, orderCreate, orderEdit } from '../Services/OrderServices'
 import PriceListComponent from './PriceComponents/PriceListComponent.jsx'
 import CheckInComponent from './CheckInComponents/CheckInComponent.jsx'
 
@@ -74,13 +75,7 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
 
     useEffect(() => {
         if (modalConfig.mode === "edit") {
-            fetch(`http://localhost:4000/order/get/${modalConfig.id}`)
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not OK');
-                    }
-                    return response.json();
-                })
+            orderGet(modalConfig.id)
                 .then((data) => {
                     setMainFormData(data);
                     setLoading(false);
@@ -95,22 +90,17 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
     }, []);
 
     const fetchData = (version) => {
-        fetch(`http://localhost:4000/order/${version}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(mainFormData),
-        }).then(response => {
+        let fetchFunction = (version == 'create') ? orderCreate : orderEdit;
+
+        fetchFunction(mainFormData).then(response => {
             closeModal()
             reloadOrdersTable()
-            console.log(response)
         }).catch(error => {
             console.error('Error:', error);
         })
     }
-    useEffect(() => {
 
+    useEffect(() => {
         if (mainFormData.arrivalDate && mainFormData.departureDate) {
             const start = new Date(mainFormData.arrivalDate);
             start.setHours(0, 0, 0, 0);
