@@ -9,7 +9,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
-function CheckInComponent({ orderData, sendChangedDataFromCheckInTab }) {
+function CheckInComponent({ orderData, sendChangedDataFromCheckInTab, reloadOrdersTable }) {
     const [modalConfig, setModalConfig] = useState(null)
 
     const handleDoneCheckIn = () => {
@@ -37,6 +37,7 @@ function CheckInComponent({ orderData, sendChangedDataFromCheckInTab }) {
         orderEditState(orderData)
             .then(data => {
                 sendChangedDataFromCheckInTab(data.order);
+                reloadOrdersTable()
                 console.log(data.order)
 
             }).catch(error => {

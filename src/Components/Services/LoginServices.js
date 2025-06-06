@@ -1,6 +1,8 @@
+const Url = 'http://localhost:4000/'
+
 export async function login(data) {
     try {
-        let response = fetch(`http://localhost:4000/auth/login`, {
+        let response = fetch(`${Url}auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

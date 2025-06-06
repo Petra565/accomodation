@@ -15,9 +15,6 @@ const PriceTypeEnum = [
         text: 'Trivago.sk',
         value: 3
     },
-    {
-        text: 'Faktura',
-        value: 4
-    }
+    
 ]
 export default PriceTypeEnum;

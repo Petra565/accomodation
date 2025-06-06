@@ -1,51 +1,51 @@
 import { useState, useEffect } from 'react'
-import Table from 'react-bootstrap/Table';
-import Stack from 'react-bootstrap/Stack';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-function ChartComponent() {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+
+import {
+    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+} from 'recharts';
+
+function ChartComponent({ data,headerText }) {
+    const [formatedData, setFormatedData] = useState([]);
 
     useEffect(() => {
-        loadOrdersData();
-    }, []);
+        let years = [];
 
-    const loadOrdersData = (filterPayload = {}) => {
-        const queryParams = new URLSearchParams(filterPayload).toString();
-        const url = `http://localhost:4000/order/list?${queryParams}`;
+        if (data) {
+            //IN vracia index - keby je OF vrati odany item
+            for (let i in data.labels) {
+                years.push({
+                    name: data.labels[i],
+                    Celkovo: data.data[0].data[i],
+                    
+                })
+            }
+        }
 
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not OK');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setData(data.orders);
-                setLoading(false);
+        setFormatedData(years);
 
-            })
-            .catch((error) => {
-                setError(error);
-                setLoading(false);
-            });
-    }
-   
+    }, [data]);
+
     return (
         <>
-           
+            <Row>
+                <Col>
+                    <h6>{headerText}</h6>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <LineChart data={formatedData}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Line type="monotone" dataKey="Celkovo" stroke=" #0d6efd" activeDot={{ r: 8 }} />
+                        </LineChart>
+                    </ResponsiveContainer>
+                </Col>
+            </Row>
         </>
     );
 }
-
 export default ChartComponent

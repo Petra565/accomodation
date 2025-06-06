@@ -284,8 +284,9 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                             </div>
                             <div className={activeTab === 'CheckInData' ? 'd-block' : 'd-none'}>
                                 <CheckInComponent
-                                    orderData={mainFormData}
-                                    sendChangedDataFromCheckInTab={(data) => setMainFormData(data)}
+                                        orderData={mainFormData}
+                                        sendChangedDataFromCheckInTab={(data) => setMainFormData(data)}
+                                        reloadOrdersTable={reloadOrdersTable}
                                 >
                                 </CheckInComponent>
                             </div>

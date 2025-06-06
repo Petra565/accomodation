@@ -1,6 +1,8 @@
+const Url = 'http://localhost:4000/checkIn/'
+
 export async function orderEditState(data) {
     try {
-        let response = await fetch(`http://localhost:4000/checkIn/markAsFinishedByHost`, {
+        let response = await fetch(`${Url}markAsFinishedByHost`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -29,7 +31,7 @@ export async function checkInGetId(id) {
 }
 export async function checkInCreate(data) {
     try {
-        let response = await fetch(`http://localhost:4000/checkIn/create`, {
+        let response = await fetch(`${Url}create`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

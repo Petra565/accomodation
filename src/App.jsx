@@ -3,9 +3,10 @@ import './App.css'
 import MainTableComponent from './Components/MainTableComponents/MainTableComponent.jsx'
 import CalendarComponent from './Components/CalendarComponent/CalendarComponent.jsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ChartComponent from './Components/ChartComponents/ChartComponent.jsx';
+import ChartsComponent from './Components/ChartComponents/ChartsComponent.jsx';
 import CheckInFormContainerComponent from './Components/CheckInFormComponents/CheckInFormContainerComponent.jsx';
 import LoginComponent from './Components/MainTableComponents/LoginComponent';
+
 function AdminPage() {
     return <h2>Admin sekcia</h2>;
 }
@@ -30,7 +31,7 @@ function App() {
                     />
                     <Route
                         path="/statistics"
-                        element={<ChartComponent />}
+                        element={<ChartsComponent />}
                     />
                     <Route
                         path="/admin"
