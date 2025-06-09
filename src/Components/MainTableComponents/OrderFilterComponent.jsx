@@ -48,12 +48,12 @@ function OrderFilterComponent({ loadFilterData }) {
 
         loadFilterData({});
     }
-    
+
     return (
         <>
             <div className="Filter">
                 <Button
-                    className="btnFilterMainTable mb-2"
+                    className="btnFilterMainTable"
                     variant="primary"
                     onClick={() => setOpen(!open)}
                     aria-controls="example-collapse-text"
@@ -63,9 +63,9 @@ function OrderFilterComponent({ loadFilterData }) {
                 </Button>
 
                 <Collapse in={open}>
-                    <div className="custom-collapse" id="example-collapse-text">
-                        <Row className="mb-3">
-                            <Form.Group as={Col} md="3" controlId="validationCustom01">
+                    <div className="custom-collapse bg-white p-3 mb-3" id="example-collapse-text">
+                        <Row>
+                            <Form.Group as={Col} className="mb-3" sm="6" lg="3" controlId="validationCustom01">
                                 <Form.Label>Meno</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -76,7 +76,7 @@ function OrderFilterComponent({ loadFilterData }) {
                                 />
                             </Form.Group>
 
-                            <Form.Group as={Col} md="3" controlId="validationCustom02">
+                            <Form.Group as={Col} className="mb-3" sm="6" lg="3" controlId="validationCustom02">
                                 <Form.Label>Priezvisko</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -87,7 +87,7 @@ function OrderFilterComponent({ loadFilterData }) {
                                 />
                             </Form.Group>
 
-                            <Form.Group as={Col} md="3" controlId="validationCustom03">
+                            <Form.Group as={Col} className="mb-3" sm="6" lg="3" controlId="validationCustom03">
                                 <Form.Label>Typ cenovej položky</Form.Label>
                                 <Form.Select
                                     aria-label="Výber typu cenovej položky"
@@ -103,7 +103,7 @@ function OrderFilterComponent({ loadFilterData }) {
                                 </Form.Select>
                             </Form.Group>
 
-                            <Form.Group as={Col} md="3" controlId="validationCustom04">
+                            <Form.Group as={Col} className="mb-3" sm="6" lg="3" controlId="validationCustom04">
                                 <Form.Label>Iba zvolený typ cenovej položky</Form.Label>
                                 <Form.Check
                                     type="switch"
@@ -115,8 +115,8 @@ function OrderFilterComponent({ loadFilterData }) {
                             </Form.Group>
                         </Row>
 
-                        <Row className="mb-3">
-                            <Form.Group as={Col} controlId="validationCustom05">
+                        <Row >
+                            <Form.Group as={Col} className="mb-3" sm="6" lg="3" controlId="validationCustom05">
                                 <Form.Label>Dátum príchodu od</Form.Label>
                                 <DatePicker
                                     className="datePicker"
@@ -127,7 +127,7 @@ function OrderFilterComponent({ loadFilterData }) {
                                 />
                             </Form.Group>
 
-                            <Form.Group as={Col} controlId="validationCustom06">
+                            <Form.Group as={Col} className="mb-3" sm="6" lg="3" controlId="validationCustom06">
                                 <Form.Label>Dátum príchodu do</Form.Label>
                                 <DatePicker
                                     className="datePicker"
@@ -138,7 +138,7 @@ function OrderFilterComponent({ loadFilterData }) {
                                 />
                             </Form.Group>
 
-                            <Form.Group as={Col} controlId="validationCustom07">
+                            <Form.Group as={Col} className="mb-3" sm="6" lg="3" controlId="validationCustom07">
                                 <Form.Label>Dátum odchodu od</Form.Label>
                                 <DatePicker
                                     className="datePicker"
@@ -149,7 +149,7 @@ function OrderFilterComponent({ loadFilterData }) {
                                 />
                             </Form.Group>
 
-                            <Form.Group as={Col} controlId="validationCustom08">
+                            <Form.Group as={Col} className="mb-3" sm="6" lg="3" controlId="validationCustom08">
                                 <Form.Label>Dátum odchodu do</Form.Label>
                                 <DatePicker
                                     className="datePicker"
@@ -160,17 +160,25 @@ function OrderFilterComponent({ loadFilterData }) {
                                 />
                             </Form.Group>
                         </Row>
-                        <Row className="mb-3 mx-0">
-                            <Button
-                                onClick={() => loadFilterData(filterData)}
-                                className="col-2  me-2"
-                                md="2"
-                                variant="primary">Vyhľadať</Button>
-                            <Button
-                                onClick={() => clearFilterData()}
-                                className="col-2"
-                                md="2"
-                                variant="secondary">Vynulovať filter</Button>
+                        <Row className=" mx-0">
+                            <Col sm="6" lg="3">
+                                <Button
+                                    onClick={() => loadFilterData(filterData)}
+                                    className="col-2  me-2 w-100 mb-3"
+                                    variant="primary"
+                                >Vyhľadať
+                                </Button>
+                            </Col>
+                            <Col sm="6" lg="3">
+                                <Button
+                                    onClick={() => clearFilterData()}
+                                    className="col-2 w-100 mb-3"
+
+                                    variant="secondary"
+                                >
+                                    Vynulovať filter
+                                </Button>
+                            </Col>
                         </Row>
                     </div>
 

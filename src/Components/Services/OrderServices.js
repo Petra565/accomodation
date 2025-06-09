@@ -61,3 +61,18 @@ export async function orderEdit(data) {
         throw new Error('Network response was not OK');
     }
 }
+
+export async function orderDelete(id) {
+    try {
+        let response = await fetch(`${Url}delete/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        return response.json();
+
+    } catch (err) {
+        throw new Error('Network response was not OK');
+    }
+}

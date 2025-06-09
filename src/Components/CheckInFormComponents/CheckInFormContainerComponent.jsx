@@ -111,7 +111,7 @@ function CheckInFormContainerComponent() {
                                 sendNewGuestData={(data) => handleChangeGuestData(data, index)}
                             />
                         ))}
-                        <div className="border rounded p-4 mt-2" >
+                        <div className="border rounded p-4 mt-2 bg-white" >
                             <Row className="mb-1">
                                 <Form.Group as={Col} md="4">
                                     <Form.Label>Dátum príchodu</Form.Label>
@@ -155,7 +155,7 @@ function CheckInFormContainerComponent() {
                                     />
                                 </Form.Group>
                             </Row>
-                            <Row className="mb-1">
+                            <Row className="mt-2">
                                 <Form.Group as={Col}>
                                     <Form.Check
                                         type='checkbox'
@@ -166,7 +166,7 @@ function CheckInFormContainerComponent() {
                                 </Form.Group>
                             </Row>
                         </div>
-                        <Row className="my-4">
+                        <Row className="my-4 pb-4">
                             <Form.Group as={Col}>
                                 <Button
                                     variant="primary"

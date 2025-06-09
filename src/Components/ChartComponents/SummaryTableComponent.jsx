@@ -10,7 +10,7 @@ import Form from 'react-bootstrap/Form';
 function SummaryTableComponent({ data }) {
     return (
         <>
-            <Table striped bordered hover>
+            <Table striped borderless hover responsive>
                 <thead>
                     <tr>
                         <th>Rok</th>

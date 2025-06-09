@@ -32,14 +32,21 @@ function ChartComponent({ data,headerText }) {
         <>
             <Row>
                 <Col>
-                    <h6>{headerText}</h6>
-                    <ResponsiveContainer width="100%" height={300}>
+                    <h6 className='mt-3'>{headerText}</h6>
+                    <ResponsiveContainer width="100%" height={380} className="bg-white ps-0 pt-4">
                         <LineChart data={formatedData}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="name" />
-                            <YAxis />
+                            <YAxis
+                                className="ms-0" />
                             <Tooltip />
-                            <Legend />
+                            <Legend
+                                wrapperStyle={{
+                                    fontSize: '14px',
+                                    color: '#333',
+                                    padding: 0,
+                                }}
+                                        />
                             <Line type="monotone" dataKey="Celkovo" stroke=" #0d6efd" activeDot={{ r: 8 }} />
                         </LineChart>
                     </ResponsiveContainer>

@@ -80,9 +80,10 @@ function CalendarComponent() {
         <>
             <NavBarComponent />
 
-            <div style={{ height: 600 }}>
+            <div style={{ height: 800 }} >
 
                 <Calendar
+                    className="bg-white"
                     localizer={localizer}
                     events={events}
                     startAccessor="start"

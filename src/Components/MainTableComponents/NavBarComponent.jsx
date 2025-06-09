@@ -9,18 +9,18 @@ function NavBarComponent() {
   
     return (
         <Navbar bg="light" expand="lg">
-            <Container>
+            <Container fluid>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link as={NavLink} to="/orders">Zoznam objednávok</Nav.Link>
-                        <Nav.Link as={NavLink} to="/calendar">Kalendár</Nav.Link>
-                        <Nav.Link as={NavLink} to="/statistics">Štatistiky</Nav.Link>
-                        <Nav.Link as={NavLink} to="/admin">Admin</Nav.Link>
+                        <Nav.Link as={NavLink} to="/orders" className="navLinkMain">Zoznam objednávok</Nav.Link>
+                        <Nav.Link as={NavLink} to="/calendar" className="navLinkMain">Kalendár</Nav.Link>
+                        <Nav.Link as={NavLink} to="/statistics" className="navLinkMain">Štatistiky</Nav.Link>
+                        <Nav.Link as={NavLink} to="/admin" className="navLinkMain">Admin</Nav.Link>
 
                     </Nav>
                 </Navbar.Collapse>
-            </Container>
+                </Container>
         </Navbar>
     );
 }

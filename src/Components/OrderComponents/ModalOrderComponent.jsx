@@ -125,7 +125,7 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
 
     return (
         <>
-            <Modal show={true} onHide={closeModal} size="lg">
+            <Modal show={true} onHide={closeModal} size="lg" className='p-0 p-sm-2' fullscreen={'sm-down'}>
                 <Modal.Header closeButton>
                     <Modal.Title> {modalConfig.mode === 'create' ? 'Pridanie ' : 'Úprava'} objednávky </Modal.Title>
                 </Modal.Header>
@@ -249,7 +249,7 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                                         <Form.Control
                                             type="number"
                                             step="1"
-                                            min="0"
+                                            min="1"
                                             required
                                             name="numberOfGuests"
                                             value={mainFormData.numberOfGuests}

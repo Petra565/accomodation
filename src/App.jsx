@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './App.css'
 import MainTableComponent from './Components/MainTableComponents/MainTableComponent.jsx'
 import CalendarComponent from './Components/CalendarComponent/CalendarComponent.jsx'
@@ -13,7 +12,7 @@ function AdminPage() {
 function App() {
 
     return (
-        <>
+        <div className="container container-md">
             <Router>
 
                 <Routes>
@@ -44,7 +43,7 @@ function App() {
                    
                 </Routes>
             </Router>
-        </>
+        </div>
     )
 }
 

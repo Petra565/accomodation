@@ -66,7 +66,7 @@ function CheckInFormComponent({ index, sendNewGuestData, isFirstGuest }) {
 
     return (
         <>
-            <div className="border p-4 rounded mb-4">
+            <div className="border p-1 p-sm-4 rounded mb-4 bg-white">
               
                 <h6>  
                     {index + 1}. Osoba{index=== 0 &&'-Objednávateľ'} </h6>
