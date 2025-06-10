@@ -15,8 +15,7 @@ function NavBarComponent() {
 
     const LogOut = () => {
         sessionStorage.clear();
-        window.location.href = "/login"
-
+        window.location.href = "/"
     }
 
     const handleClickLogOut = () => {
