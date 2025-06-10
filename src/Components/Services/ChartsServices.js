@@ -1,10 +1,12 @@
 const Url = 'http://localhost:4000/stats/'
 export async function getChartsSummary() {
+    const token = sessionStorage.getItem('token');
     try {
         let response = await fetch(`${Url}getChartsSummary`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
         })
         return response.json();
@@ -15,11 +17,13 @@ export async function getChartsSummary() {
 }
 
 export async function getTableSummary() {
+    const token = sessionStorage.getItem('token');
     try {
         let response = await fetch(`${Url}getTableSummary`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
         })
         return response.json();

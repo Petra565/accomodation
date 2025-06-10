@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import CheckInFormComponent from '../CheckInFormComponents/CheckInFormComponent'
 import { useParams } from 'react-router-dom'
-import { checkInGetId } from '../Services/CheckInServices'
+import { checkInGet } from '../Services/CheckInServices'
 import { checkInCreate } from '../Services/CheckInServices'
 
 //Bootstrap
@@ -43,7 +43,7 @@ function CheckInFormContainerComponent() {
     }, [id]);
 
     const loadOrderData = (orderId) => {
-        checkInGetId(orderId)
+        checkInGet(orderId)
             .then((data) => {
                 setLoading(false);
                 setOrderData(data)

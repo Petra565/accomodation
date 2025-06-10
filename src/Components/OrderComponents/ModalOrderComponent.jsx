@@ -21,8 +21,6 @@ import DatePicker from 'react-datepicker';
 import LanguageEnum from '../../Enums/Languages'
 import CountryCodesEnum from '../../Enums/CountryCodes'
 
-import moment from 'moment';
-
 function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
     const [validated, setValidated] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -153,7 +151,7 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                                 )}
                             </Nav>
 
-                            <Form id="FormAddOrder" noValidate validated={validated} onSubmit={handleSubmit} className={activeTab === '/MainInfo' ? 'd-block' : 'd-none'}>
+                                <Form id="FormAddOrder" noValidate validated={validated} onSubmit={handleSubmit} className={activeTab === '/MainInfo' ? 'd-block' : 'd-none'}>
                                 <Row className="mb-3">
                                     <Form.Group as={Col} md="6" controlId="validationCustom01">
                                         <Form.Label>Meno</Form.Label>
@@ -276,17 +274,17 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
                                 </Row>
                             </Form>
 
-                            <div className={activeTab === 'PriceList' ? 'd-block' : 'd-none'}>
+                                <div className={activeTab === 'PriceList' ? 'd-block' : 'd-none'}>
                                 <PriceListComponent
                                     mainFormData={mainFormData}
                                     changeData={(priceData) => handleChangeData(priceData)}
                                 />
                             </div>
-                            <div className={activeTab === 'CheckInData' ? 'd-block' : 'd-none'}>
+                            <div className={activeTab === 'CheckInData' ?'d-block' : 'd-none'}>
                                 <CheckInComponent
-                                        orderData={mainFormData}
-                                        sendChangedDataFromCheckInTab={(data) => setMainFormData(data)}
-                                        reloadOrdersTable={reloadOrdersTable}
+                                    orderData={mainFormData}
+                                    sendChangedDataFromCheckInTab={(data) => setMainFormData(data)}
+                                    reloadOrdersTable={reloadOrdersTable}
                                 >
                                 </CheckInComponent>
                             </div>

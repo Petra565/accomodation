@@ -22,7 +22,6 @@ function ChartsComponent() {
     }, []);
 
     useEffect(() => {
-        console.log(chartsData)
     }, [chartsData]);
 
     const loadOrdersData = () => {

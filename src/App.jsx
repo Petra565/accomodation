@@ -12,7 +12,7 @@ function AdminPage() {
 function App() {
 
     return (
-        <div className="container container-md">
+        <div className="container container-md rounded">
             <Router>
 
                 <Routes>

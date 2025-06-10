@@ -6,7 +6,6 @@ import { orderList } from '../Services/OrderServices.js';
 import { orderDelete } from '../Services/OrderServices.js';
 import UniversalModalComponent from '../CommonComponents/UniversalModalComponent.jsx'
 
-
 import Table from 'react-bootstrap/Table';
 import Badge from 'react-bootstrap/Badge';
 import Stack from 'react-bootstrap/Stack';
@@ -18,13 +17,13 @@ import PriceTypeEnum from '../../Enums/PriceType.js';
 
 import moment from 'moment';
 import Modal from 'react-bootstrap/Modal';
-
 function MainTableComponent() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [orderModalConfig, setOrderModalConfig] = useState({ show: false });
     const [modalConfig, setModalConfig] = useState(null)
+    const [tableMode, setTableMode] = useState('basic');
 
     useEffect(() => {
         loadOrdersData();
@@ -58,6 +57,7 @@ function MainTableComponent() {
             ]
         })
     }
+
     const loadOrdersData = (filterPayload = {}) => {
         //vyskladane filtracne parametre pre order list
         const queryParams = new URLSearchParams(filterPayload).toString();
@@ -100,6 +100,7 @@ function MainTableComponent() {
             return 'done'
         }
     }
+
     const getNumberOfNights = (order) => {
         const start = new Date(order.arrivalDate);
         start.setHours(0, 0, 0, 0);
@@ -110,6 +111,24 @@ function MainTableComponent() {
         const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
 
         return Math.round(diffInDays > 0 ? diffInDays : 0);
+    };
+
+    const evaluateShowColumnByTableMode = (columnName) => {
+        let tableBasic = ['firstName', 'lastName', 'state']
+        let tableExtended = ['firstName', 'lastName', 'priceType', 'arrivalDate', 'departureDate', 'state', 'numberOfGuests', 'numberOfNights', 'checkIn']
+        let tableFinancial = ['firstName', 'lastName', 'priceType', 'arrivalDate', 'departureDate', 'numberOfGuests', 'numberOfNights', 'paidByGuest', 'paidToHost', 'totalNumberOfNights', 'averagePaidByGuest', 'averagePaidToHost', 'serviceFeeGuest', 'serviceFeeHost']
+
+        if (tableMode === "basic" && tableBasic.includes(columnName)) {
+            return ''
+        }
+        else if (tableMode === "extended" && tableExtended.includes(columnName)) {
+            return ''
+        }
+        else if (tableMode === "financial" && tableFinancial.includes(columnName)) {
+            return ''
+        }
+
+        return 'd-none'
     };
 
     if (loading) return <p>Načítavam...</p>;
@@ -133,10 +152,14 @@ function MainTableComponent() {
                     </Button>
                 </Col>
                 <Col md={3}>
-                    <Form.Select className="my-2" aria-label="Default select example">
-                        <option value="1">Základná</option>
-                        <option value="2">Rozšírená</option>
-                        <option value="3">Finančná</option>
+                    <Form.Select
+                        className="my-2"
+                        aria-label="Default select example"
+                        onChange={(e) => setTableMode(e.target.value)}
+                    >
+                        <option value="basic">Základná</option>
+                        <option value="extended">Rozšírená</option>
+                        <option value="financial">Finančná</option>
                     </Form.Select>
                 </Col>
             </Row>
@@ -149,15 +172,19 @@ function MainTableComponent() {
             <Table striped borderless hover responsive className="tableMain">
                 <thead>
                     <tr>
-                        <th>Meno</th>
-                        <th>Priezvisko</th>
-                        <th>Typy cenových položiek</th>
-                        <th>Dátum príchodu</th>
-                        <th>Dátum odchodu</th>
-                        <th>Stav</th>
-                        <th>Počet hostí</th>
-                        <th>Počet nocí</th>
-                        <th>Check-in</th>
+                        <th className={evaluateShowColumnByTableMode('firstName')}>Meno</th>
+                        <th className={evaluateShowColumnByTableMode('lastName')}>Priezvisko</th>
+                        <th className={evaluateShowColumnByTableMode('priceType')}>Typy cenových položiek</th>
+                        <th className={evaluateShowColumnByTableMode('arrivalDate')}>Dátum príchodu</th>
+                        <th className={evaluateShowColumnByTableMode('departureDate')}>Dátum odchodu</th>
+                        <th className={evaluateShowColumnByTableMode('state')}>Stav</th>
+                        <th className={evaluateShowColumnByTableMode('numberOfGuests')}>Počet hostí</th>
+                        <th className={evaluateShowColumnByTableMode('numberOfNights')}>Počet nocí</th>
+                        <th className={evaluateShowColumnByTableMode('checkIn')}>Check-in</th>
+                        <th className={evaluateShowColumnByTableMode('paidByGuest')}>Zaplatené hosťom</th>
+                        <th className={evaluateShowColumnByTableMode('paidToHost')}>Vyplatené hostiteľovi</th>
+                        <th className={evaluateShowColumnByTableMode('serviceFeeGuest')}>SP hosťa</th>
+                        <th className={evaluateShowColumnByTableMode('serviceFeeHost')}>SP hostiteľa</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -167,12 +194,12 @@ function MainTableComponent() {
                     {data.map((order, i) => {
                         return (
                             <tr key={i}>
-                                <td>{order.firstName}</td>
-                                <td>{order.lastName}</td>
-                                <td>{((getPriceTypeNames(order))).join(', ')}</td>
-                                <td>{order.arrivalDate ? moment(order.arrivalDate).format('DD.MM.YYYY') : ''}</td>
-                                <td>{order.departureDate ? moment(order.departureDate).format('DD.MM.YYYY') : ''}</td>
-                                <td>
+                                <td className={evaluateShowColumnByTableMode('firstName')}>{order.firstName}</td>
+                                <td className={evaluateShowColumnByTableMode('lastName')}>{order.lastName}</td>
+                                <td className={evaluateShowColumnByTableMode('priceType')}>{((getPriceTypeNames(order))).join(', ')}</td>
+                                <td className={evaluateShowColumnByTableMode('arrivalDate')}>{order.arrivalDate ? moment(order.arrivalDate).format('DD.MM.YYYY') : ''}</td>
+                                <td className={evaluateShowColumnByTableMode('departureDate')}>{order.departureDate ? moment(order.departureDate).format('DD.MM.YYYY') : ''}</td>
+                                <td className={evaluateShowColumnByTableMode('state')}>
                                     {
                                         getStateOfOrder(order) == 'upcoming' && (
                                             <Badge bg='primary'>Plánovaná</Badge>
@@ -189,14 +216,14 @@ function MainTableComponent() {
                                         )
                                     }
                                 </td>
-                                <td>{order.numberOfGuests}</td>
-                                <td>{
+                                <td className={evaluateShowColumnByTableMode('numberOfGuests')}>{order.numberOfGuests}</td>
+                                <td className={evaluateShowColumnByTableMode('numberOfNights')}>{
                                     order._id && (
                                         getNumberOfNights(order)
                                     )
                                 }
                                 </td>
-                                <td>
+                                <td className={evaluateShowColumnByTableMode('checkIn')}>
                                     {
                                         order.checkInData?.state == 'notFinished' && (
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg text-danger" viewBox="0 0 16 16">
@@ -223,6 +250,10 @@ function MainTableComponent() {
                                     }
 
                                 </td>
+                                <td className={evaluateShowColumnByTableMode('paidByGuest')}>{order.totalPaidByGuest}€</td>
+                                <td className={evaluateShowColumnByTableMode('paidToHost')}>{order.totalPaidToHost}€</td>
+                                <td className={evaluateShowColumnByTableMode('serviceFeeGuest')}>{order.totalServiceFeeGuest}€</td>
+                                <td className={evaluateShowColumnByTableMode('serviceFeeHost')}>{order.totalServiceFeeHost}€</td>
                                 <td>
                                     {
                                         order._id && (

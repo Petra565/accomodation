@@ -31,9 +31,12 @@ function LoginComponent() {
             event.stopPropagation();
         } else {
             login(User)
-                .then(response => {
-                    console.log(response)
+                .then(data => {
+                    const token = data.token;
                     //TOKEN z response si uloz do localstorage
+                    sessionStorage.setItem('token', token);
+                    if (token)
+                    window.location.href='/Orders';
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -41,14 +44,14 @@ function LoginComponent() {
         }
         setValidated(true);
     }
-
+    
     return (
-        <>
-            <div className="border rounded p-4 ">
+        <div className='d-flex justify-content-center'>
+            <div className="p-4 w-50">
                 <h4>Prihlásenie</h4>
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                     <Row className="my-2">
-                        <Form.Group as={Col} >
+                        <Form.Group as={Col}>
                             <Form.Label>Email</Form.Label>
                             <Form.Control
                                 required
@@ -60,7 +63,7 @@ function LoginComponent() {
                         </Form.Group>
                     </Row>
                     <Row className="my-2">
-                        <Form.Group as={Col} >
+                        <Form.Group as={Col}>
                             <Form.Label>Heslo</Form.Label>
                             <Form.Control
                                 required
@@ -83,7 +86,7 @@ function LoginComponent() {
                     </Row>
                 </Form>
             </div>
-        </>
+        </div>
     );
 }
 

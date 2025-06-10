@@ -15,9 +15,9 @@ export async function orderEditState(data) {
         throw new Error('Network response was not OK');
     }
 }
-export async function checkInGetId(id) {
+export async function checkInGet(id) {
     try {
-        let response = await fetch(`http://localhost:4000/order/get/${id}`, {
+        let response = await fetch(`${Url}get/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
