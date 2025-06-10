@@ -30,11 +30,11 @@ function SummaryTableComponent({ data }) {
                                 <tr key={i}>
                                     <td>{order.year}</td>
                                     <td>{order.numberOfOrders}</td>
-                                    <td>{order.paidByGuest}</td>
-                                    <td>{order.paidToHost}</td>
+                                    <td>{order.paidByGuest}€</td>
+                                    <td>{order.paidToHost}€</td>
                                     <td>{order.totalNumberOfNights}</td>
-                                    <td>{order.averagePaidByGuest}</td>
-                                    <td>{order.averagePaidToHost}</td>
+                                    <td>{order.averagePaidByGuest}€</td>
+                                    <td>{order.averagePaidToHost}€</td>
                                 </tr>
                             </>
                         )

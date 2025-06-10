@@ -60,10 +60,10 @@ function PriceListComponent({ changeData, mainFormData }) {
                         return (
                             <tr key={i}>
                                 <td>{price.priceType}</td>
-                                <td>{price.paidByGuest}</td>
-                                <td>{price.paidToHost}</td>
-                                <td>{price.serviceFeeGuest}</td>
-                                <td>{price.serviceFeeHost}</td>
+                                <td>{price.paidByGuest}€</td>
+                                <td>{price.paidToHost}€</td>
+                                <td>{price.serviceFeeGuest}€</td>
+                                <td>{price.serviceFeeHost}€</td>
                                 <td>{price.priceNote}</td>
                                 <td>
                                     <span className="DetailIconPriceListTable"
