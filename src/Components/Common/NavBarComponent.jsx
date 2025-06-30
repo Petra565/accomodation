@@ -1,14 +1,17 @@
 import { NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react'
+import UniversalModalComponent from './UniversalModalComponent.jsx'
+
+//Bootstrap
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
-import { useState, useEffect } from 'react'
-import UniversalModalComponent from '../CommonComponents/UniversalModalComponent.jsx'
 
 
 function NavBarComponent() {
     const [modalConfig, setModalConfig] = useState(null)
+
     const clearModalConfig = () => {
         setModalConfig(null)
     }
@@ -41,7 +44,6 @@ function NavBarComponent() {
                             <Nav.Link as={NavLink} to="/orders" className="navLinkMain">Zoznam objednávok</Nav.Link>
                             <Nav.Link as={NavLink} to="/calendar" className="navLinkMain">Kalendár</Nav.Link>
                             <Nav.Link as={NavLink} to="/statistics" className="navLinkMain">Štatistiky</Nav.Link>
-                            <Nav.Link as={NavLink} to="/admin" className="navLinkMain">Admin</Nav.Link>
                         </Nav>
 
                     </Navbar.Collapse>

@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react'
-import { orderGet, orderCreate, orderEdit } from '../Services/OrderServices'
-import PriceListComponent from './PriceComponents/PriceListComponent.jsx'
-import CheckInComponent from './CheckInComponents/CheckInComponent.jsx'
-
+﻿import { useState, useEffect } from 'react'
+import { orderGet, orderCreate, orderEdit } from '../../Services/OrderServices'
+import PriceListComponent from './Price/PriceListComponent.jsx'
+import CheckInComponent from './CheckIn/CheckInComponent.jsx'
 
 //Bootstrap
 import Button from 'react-bootstrap/Button';
@@ -13,13 +12,12 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Nav from 'react-bootstrap/Nav';
 
-
 //DatePicker
 import DatePicker from 'react-datepicker';
 
 //Enums
-import LanguageEnum from '../../Enums/Languages'
-import CountryCodesEnum from '../../Enums/CountryCodes'
+import LanguageEnum from '../../../Enums/Languages'
+import CountryCodesEnum from '../../../Enums/CountryCodes'
 
 function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
     const [validated, setValidated] = useState(false);
@@ -39,6 +37,7 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
         prices: []
     });
 
+    //po zmene hodnoty vo formulari ulozi hodnotu do mainFormData
     const handleChange = (e) => {
         const { name, value } = e.target;
         setMainFormData((prevData) => ({
@@ -46,6 +45,8 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
             [name]: value
         }));
     };
+
+    //po zmene cenovej polozky ulozi do mainFormData
     const handleChangeData = (priceData) => {
         setMainFormData({
             ...mainFormData,
@@ -54,6 +55,7 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
 
     }
 
+    //odoslanie formulara - edit alebo create
     const handleSubmit = async (event) => {
         const form = event.currentTarget;
         event.preventDefault();
@@ -62,15 +64,16 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
             event.stopPropagation();
         } else {
             if (modalConfig.mode === "edit") {
-                fetchData('edit')
+                fetchData('edit');
             }
             else {
-                fetchData('create')
+                fetchData('create');
             }
         }
         setValidated(true);
     };
 
+    //uvodne vyhodnotenie - ak je edit tak nacita udaje objednavky
     useEffect(() => {
         if (modalConfig.mode === "edit") {
             orderGet(modalConfig.id)
@@ -87,6 +90,7 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
         }
     }, []);
 
+    //po odoslani vyhodnoti ci edituje alebo vytvára a na zaklade toho pouzije sluzbu
     const fetchData = (version) => {
         let fetchFunction = (version == 'create') ? orderCreate : orderEdit;
 
@@ -98,6 +102,7 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
         })
     }
 
+    //vypocitava pocet noci
     useEffect(() => {
         if (mainFormData.arrivalDate && mainFormData.departureDate) {
             const start = new Date(mainFormData.arrivalDate);
@@ -123,7 +128,7 @@ function ModalOrderComponent({ reloadOrdersTable, closeModal, modalConfig }) {
 
     return (
         <>
-            <Modal show={true} onHide={closeModal} size="lg" className='p-0 p-sm-2' fullscreen={'sm-down'}>
+            <Modal show={true} onHide={closeModal} size="lg" className='p-sm-2 p-0' fullscreen={'sm-down'}>
                 <Modal.Header closeButton>
                     <Modal.Title> {modalConfig.mode === 'create' ? 'Pridanie ' : 'Úprava'} objednávky </Modal.Title>
                 </Modal.Header>

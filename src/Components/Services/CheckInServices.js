@@ -1,11 +1,14 @@
 const Url = 'http://localhost:4000/checkIn/'
 
 export async function orderEditState(data) {
+    const token = sessionStorage.getItem('token');
+
     try {
         let response = await fetch(`${Url}markAsFinishedByHost`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(data),
         })

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 //Bootstrap
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -7,7 +7,6 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Nav from 'react-bootstrap/Nav';
-
 
 //DatePicker
 import DatePicker from 'react-datepicker';
@@ -39,10 +38,13 @@ function CheckInFormComponent({ index, sendNewGuestData, isFirstGuest }) {
             },
         },
     )
+
+    //ak sa zmenia data posli ich vrchnejsiemu komponentu
     useEffect(() => {
         sendNewGuestData(newGuestData)
     }, [newGuestData])
 
+    // ak sa vyplnia data uloz ich do objektu newGuestData
     const handleChange = (e) => {
         const { name, value } = e.target;
         setNewGuestData((prevData) => ({
@@ -51,6 +53,7 @@ function CheckInFormComponent({ index, sendNewGuestData, isFirstGuest }) {
         }));
     };
 
+    // ak sa vyplnia data pre adresu uloz ich do objektu newGuestData
     const handleAddressChange = (e) => {
         const { name, value } = e.target;
         setNewGuestData(prevData => ({
@@ -62,17 +65,15 @@ function CheckInFormComponent({ index, sendNewGuestData, isFirstGuest }) {
         }));
     }
 
-    
-
     return (
         <>
-            <div className="border p-1 p-sm-4 rounded mb-4 bg-white">
-              
-                <h6>  
-                    {index + 1}. Osoba{index=== 0 &&'-Objednávateľ'} </h6>
-                
+            <div className="p-sm-4 mb-4 rounded border bg-white p-1">
+
+                <h6>
+                    {index + 1}. Osoba{index === 0 && '-Objednávateľ'} </h6>
+
                 <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="validationCustom01">
+                    <Form.Group as={Col} md="6">
                         <Form.Label>Meno</Form.Label>
                         <Form.Control
                             required
@@ -82,10 +83,10 @@ function CheckInFormComponent({ index, sendNewGuestData, isFirstGuest }) {
                             onChange={handleChange}
                         />
                         <Form.Control.Feedback type="invalid">
-                            Zadaná hodnota je nesprávna.
+                            Toto pole je povinné.
                         </Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="validationCustom02">
+                    <Form.Group as={Col} md="6">
                         <Form.Label>Priezvisko</Form.Label>
                         <Form.Control
                             required
@@ -95,12 +96,12 @@ function CheckInFormComponent({ index, sendNewGuestData, isFirstGuest }) {
                             onChange={handleChange}
                         />
                         <Form.Control.Feedback type="invalid">
-                            Zadaná hodnota je nesprávna.
+                            Toto pole je povinné.
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Row>
                 <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="validationCustom03">
+                    <Form.Group as={Col} md="6">
                         <Form.Label>Národnosť</Form.Label>
                         <Form.Select aria-label="Výber národnosti"
                             required
@@ -114,24 +115,29 @@ function CheckInFormComponent({ index, sendNewGuestData, isFirstGuest }) {
                                 </option>
                             ))}
                         </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                            Toto pole je povinné.
+                        </Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="validationCustom04">
+                    <Form.Group as={Col} md="6">
                         <Form.Label>Dátum narodenia</Form.Label>
                         <DatePicker
-                            className="datePicker"
+                            required
+                            className={`form-control ${validated && !newGuestData.dateOfBirth ? 'is-invalid' : ''}`}
                             selected={newGuestData.dateOfBirth}
                             onChange={(date) => handleChange({ target: { value: date, name: 'dateOfBirth' } })}
                             dateFormat="dd.MM.yyyy"
                             placeholderText="Klikni pre výber dátumu"
                         />
-
-                        <Form.Control.Feedback type="invalid">
-                            Zadaná hodnota je nesprávna.
-                        </Form.Control.Feedback>
+                        {validated && !newGuestData.dateBirth && (
+                            <div className="invalid-feedback d-block">
+                                Toto pole je povinné.
+                            </div>
+                        )}
                     </Form.Group>
                 </Row>
                 <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="validationCustom03">
+                    <Form.Group as={Col} md="6">
                         <Form.Label>Typ dokladu</Form.Label>
                         <Form.Select aria-label="Výber národnosti"
                             required
@@ -145,8 +151,11 @@ function CheckInFormComponent({ index, sendNewGuestData, isFirstGuest }) {
                                 </option>
                             ))}
                         </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                            Toto pole je povinné.
+                        </Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="validationCustom05">
+                    <Form.Group as={Col} md="6">
                         <Form.Label>Číslo dokladu</Form.Label>
                         <Form.Control
                             required
@@ -157,13 +166,13 @@ function CheckInFormComponent({ index, sendNewGuestData, isFirstGuest }) {
                         />
 
                         <Form.Control.Feedback type="invalid">
-                            Zadaná hodnota je nesprávna.
+                            Toto pole je povinné.
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Row>
                 <h6>Adresa trvalého pobytu</h6>
                 <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="validationCustom02">
+                    <Form.Group as={Col} md="6">
                         <Form.Label>Ulica</Form.Label>
                         <Form.Control
                             required
@@ -173,10 +182,10 @@ function CheckInFormComponent({ index, sendNewGuestData, isFirstGuest }) {
                             onChange={handleAddressChange}
                         />
                         <Form.Control.Feedback type="invalid">
-                            Zadaná hodnota je nesprávna.
+                            Toto pole je povinné.
                         </Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="validationCustom07">
+                    <Form.Group as={Col} md="6">
                         <Form.Label>Číslo domu</Form.Label>
                         <Form.Control
                             type="number"
@@ -188,12 +197,12 @@ function CheckInFormComponent({ index, sendNewGuestData, isFirstGuest }) {
                             onChange={handleAddressChange}
                         />
                         <Form.Control.Feedback type="invalid">
-                            Zadaná hodnota je nesprávna.
+                            Toto pole je povinné.
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Row>
                 <Row className="mb-3">
-                    <Form.Group as={Col} md="12" controlId="validationCustom08">
+                    <Form.Group as={Col} md="12">
                         <Form.Label>Štát</Form.Label>
                         <Form.Select
                             required
@@ -207,12 +216,15 @@ function CheckInFormComponent({ index, sendNewGuestData, isFirstGuest }) {
                                     {CountryCode.text}
                                 </option>
                             ))}
-                        
+
                         </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                            Toto pole je povinné.
+                        </Form.Control.Feedback>
                     </Form.Group>
                 </Row>
                 <Row className="mb-6">
-                    <Form.Group as={Col} md="6" controlId="validationCustom08">
+                    <Form.Group as={Col} md="6">
                         <Form.Label>Mesto</Form.Label>
                         <Form.Control
                             required
@@ -222,10 +234,10 @@ function CheckInFormComponent({ index, sendNewGuestData, isFirstGuest }) {
                             onChange={handleAddressChange}
                         />
                         <Form.Control.Feedback type="invalid">
-                            Zadaná hodnota je nesprávna.
+                            Toto pole je povinné.
                         </Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="validationCustom08">
+                    <Form.Group as={Col} md="6">
                         <Form.Label>PSČ</Form.Label>
                         <Form.Control
                             required
@@ -235,7 +247,7 @@ function CheckInFormComponent({ index, sendNewGuestData, isFirstGuest }) {
                             onChange={handleAddressChange}
                         />
                         <Form.Control.Feedback type="invalid">
-                            Zadaná hodnota je nesprávna.
+                            Toto pole je povinné.
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Row>

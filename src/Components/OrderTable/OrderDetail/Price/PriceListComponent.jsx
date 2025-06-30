@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import PriceItemModalComponent from './PriceItemModalComponent.jsx'
 
-
+//Bootstrap
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
@@ -17,10 +17,13 @@ function PriceListComponent({ changeData, mainFormData }) {
     const [priceData, setPriceData] = useState([]);
     const [priceModalConfig, setPriceModalConfig] = useState({ show: false });
 
+    //data zo vstumneho configu ulozime do lokalnej premennej
     useEffect(() => {
         setPriceData(mainFormData.prices);
     }, []);
 
+    //ak je mode edit prepise sa polozka v poli
+    //ak je mode create vlozi sa nova polozka
     const savePriceDataHandler = (data) => {
         if (priceModalConfig.mode == 'edit') {
             let priceDataCopy = [...priceData];
@@ -36,6 +39,7 @@ function PriceListComponent({ changeData, mainFormData }) {
 
     }
 
+    //ked sa zmenia data tak sa poslu do vcrhnejsieho komponentu (detail objednavky)
     useEffect(() => {
         changeData(priceData);
     }, [priceData]);
@@ -80,7 +84,7 @@ function PriceListComponent({ changeData, mainFormData }) {
             </Table>
             <Col md={3}>
                 <Button className="m-2" variant="primary" onClick={() => setPriceModalConfig({ show: true, mode: 'create' })} >
-                    Pridat cenovu polozku
+                    Pridať cenovú položku
                 </Button>
             </Col>
             {

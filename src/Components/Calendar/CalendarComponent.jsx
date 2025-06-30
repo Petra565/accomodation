@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
-import Button from 'react-bootstrap/Button';
-import NavBarComponent from '../MainTableComponents/NavBarComponent.jsx';
-import { orderList } from '../Services/OrderServices.js';
 
+//Bootstrap
+import Button from 'react-bootstrap/Button';
+import NavBarComponent from '../Common/NavBarComponent.jsx';
+
+//Services
+import { orderList } from '../Services/OrderServices.js';
 
 //Calendar
 import { Calendar, momentLocalizer } from 'react-big-calendar';
@@ -18,10 +21,12 @@ function CalendarComponent() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    //zavolaj nacitanie dat pri vzniku komponentu
     useEffect(() => {
         loadOrdersData();
     }, []);
 
+    //sluzba na nacitanie dat zoznamu objednavok
     const loadOrdersData = () => {
         orderList()
             .then((data) => {
@@ -34,6 +39,8 @@ function CalendarComponent() {
                 setLoading(false);
             });
     }
+
+    //zistenie stavu objednavky na zaklade datumov
     const getState = (order) => {
         if (!order) return;
         const now = new Date();
@@ -45,6 +52,7 @@ function CalendarComponent() {
         else return 'done';
     }
 
+    //preformatovanie dat pre potreby kalendar kompnentu
     const events = data.map((order) => ({
         state: getState(order),
         title: (order.firstName + ' ' + order.lastName),
@@ -53,6 +61,7 @@ function CalendarComponent() {
         allDay: true
     }))
 
+    //ziskam farbu na zaklade stavu objednavky
     const eventStyleGetter = (event) => {
         let backgroundColor = '#3174ad'
 

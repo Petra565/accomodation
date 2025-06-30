@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import ModalOrderComponent from '../OrderComponents/ModalOrderComponent.jsx'
-import OrderFilterComponent from '../MainTableComponents/OrderFilterComponent.jsx'
-import NavBarComponent from '../MainTableComponents/NavBarComponent.jsx';
+import ModalOrderComponent from './OrderDetail/ModalOrderComponent.jsx'
+import OrderFilterComponent from './OrderFilterComponent.jsx'
+import NavBarComponent from '../Common/NavBarComponent.jsx';
 import { orderList } from '../Services/OrderServices.js';
 import { orderDelete } from '../Services/OrderServices.js';
-import UniversalModalComponent from '../CommonComponents/UniversalModalComponent.jsx'
+import UniversalModalComponent from '../Common/UniversalModalComponent.jsx'
 
+//bootstrap
 import Table from 'react-bootstrap/Table';
 import Badge from 'react-bootstrap/Badge';
 import Stack from 'react-bootstrap/Stack';
@@ -13,6 +14,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+
+//Enums
 import PriceTypeEnum from '../../Enums/PriceType.js';
 
 import moment from 'moment';
@@ -29,16 +32,18 @@ function MainTableComponent() {
         loadOrdersData();
     }, []);
 
+    //zatvor modal - vycisti modalConfig
     const clearModalConfig = () => {
         setModalConfig(null)
     }
 
+    //funkcia na vymazanie objednavky
     const callHandleDeleteOrder = (orderId) => {
-        setModalConfig(null)
         orderDelete(orderId)
             .then(() => {
                 loadOrdersData();
                 setLoading(false);
+                setModalConfig(null);
             })
             .catch((error) => {
                 setError(error);
@@ -46,21 +51,22 @@ function MainTableComponent() {
             });
     }
 
+    //modal na vymazanie objednavky
     const handleClickDelete = (orderId) => {
         setModalConfig({
-            title: "Vymazat objednavku",
+            title: "Vymazať objednávku",
             btnCloseCallback: clearModalConfig,
-            text: "Naozaj chcete vymazat objednavku?",
+            text: "Naozaj chcete vymazať objednávku?",
             buttons: [
-                { text: 'Zavriet', variant: 'secondary', callback: clearModalConfig },
-                { text: 'Vymazat objednavku', variant: 'danger', callback: () => callHandleDeleteOrder(orderId) },
+                { text: 'Zavrieť', variant: 'secondary', callback: clearModalConfig },
+                { text: 'Vymazať objednávku', variant: 'danger', callback: () => callHandleDeleteOrder(orderId) },
             ]
         })
     }
 
+    //nacitanie objednavok do tabulky
     const loadOrdersData = (filterPayload = {}) => {
-        //vyskladane filtracne parametre pre order list
-        const queryParams = new URLSearchParams(filterPayload).toString();
+        const queryParams = new URLSearchParams(filterPayload).toString(); //vyskladane filtracne parametre pre order list
 
         orderList(queryParams)
             .then((data) => {
@@ -73,6 +79,7 @@ function MainTableComponent() {
             });
     }
 
+    //zisti nazov portálu z ciselnika
     const getPriceTypeNames = (order) => {
         let priceNames = [];
 
@@ -85,6 +92,7 @@ function MainTableComponent() {
         return priceNames;
     }
 
+    //zistenie stavu objednavky z datumov
     const getStateOfOrder = (order) => {
         let date = new Date();
         let arrivalDate = new Date(order.arrivalDate);
@@ -101,6 +109,7 @@ function MainTableComponent() {
         }
     }
 
+    //zistenie poctu noci z datumov
     const getNumberOfNights = (order) => {
         const start = new Date(order.arrivalDate);
         start.setHours(0, 0, 0, 0);
@@ -113,6 +122,7 @@ function MainTableComponent() {
         return Math.round(diffInDays > 0 ? diffInDays : 0);
     };
 
+    //skryvanie stlpcov tabulky podla toho aky ma mód - zakladna/rozsirena/financna
     const evaluateShowColumnByTableMode = (columnName) => {
         let tableBasic = ['firstName', 'lastName', 'state']
         let tableExtended = ['firstName', 'lastName', 'priceType', 'arrivalDate', 'departureDate', 'state', 'numberOfGuests', 'numberOfNights', 'checkIn']
@@ -285,10 +295,8 @@ function MainTableComponent() {
                     })}
                 </tbody>
             </Table>
-            <UniversalModalComponent
-                modalConfig={modalConfig}
-            >
-            </UniversalModalComponent >
+
+            <UniversalModalComponent modalConfig={modalConfig} />
         </>
     );
 }

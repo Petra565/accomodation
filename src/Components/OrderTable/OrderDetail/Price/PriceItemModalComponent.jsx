@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 
+//Bootstrap
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
@@ -8,7 +9,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Nav from 'react-bootstrap/Nav';
 import Table from 'react-bootstrap/Table';
-import PriceTypeEnum from '../../../Enums/PriceType';
+import PriceTypeEnum from '../../../../Enums/PriceType';
 
 function PriceItemModalComponent({ modalConfig, closeModal, savePriceData }) {
     const [validated, setValidated] = useState(false);
@@ -22,12 +23,14 @@ function PriceItemModalComponent({ modalConfig, closeModal, savePriceData }) {
         serviceFeeHost: '',
     });
 
+    //ked je edit tak modalConfigdata zo vstupneho configu uloz do priceFormData
     useEffect(() => {
         if (modalConfig.mode == 'edit') {
             setPriceFormData(modalConfig.data)
         }
     }, []);
-   
+
+   //ked sa zmeni hodnota vo formulari tak ju ulozi do priceFormData
     const handleChange = (e) => {
         const { name, value } = e.target;
         setPriceFormData((prevData) => ({
@@ -36,6 +39,7 @@ function PriceItemModalComponent({ modalConfig, closeModal, savePriceData }) {
         }));
     };
 
+    //po potvrdeni formulara posle data do vrchneho komponentu
     const submitForm = (event) => {
         event.preventDefault();
         savePriceData(priceFormData)

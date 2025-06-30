@@ -1,18 +1,17 @@
-import './App.css'
-import MainTableComponent from './Components/MainTableComponents/MainTableComponent.jsx'
-import CalendarComponent from './Components/CalendarComponent/CalendarComponent.jsx'
+﻿import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ChartsComponent from './Components/ChartComponents/ChartsComponent.jsx';
-import CheckInFormContainerComponent from './Components/CheckInFormComponents/CheckInFormContainerComponent.jsx';
-import LoginComponent from './Components/MainTableComponents/LoginComponent';
 
-function AdminPage() {
-    return <h2>Admin sekcia</h2>;
-}
+import OrderTableComponent from './Components/OrderTable/OrderTableComponent.jsx'
+import CalendarComponent from './Components/Calendar/CalendarComponent.jsx'
+import ChartsComponent from './Components/Chart/ChartsComponent.jsx';
+import CheckInFormContainerComponent from './Components/CheckInForm/CheckInFormContainerComponent.jsx';
+import LoginComponent from './Components/Common/LoginComponent';
+
+
 function App() {
 
     return (
-        <div className="container container-md rounded">
+        <div className="container-md container rounded">
             <Router>
 
                 <Routes>
@@ -22,7 +21,7 @@ function App() {
                     />
                     <Route
                         path="/orders"
-                        element={<MainTableComponent />}
+                        element={<OrderTableComponent />}
                     />
                     <Route
                         path="/calendar"
@@ -31,10 +30,6 @@ function App() {
                     <Route
                         path="/statistics"
                         element={<ChartsComponent />}
-                    />
-                    <Route
-                        path="/admin"
-                        element={<AdminPage />}
                     />
                     <Route
                         path="/CheckIn/:id"

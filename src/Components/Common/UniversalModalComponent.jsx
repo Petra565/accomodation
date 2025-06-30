@@ -11,9 +11,9 @@ function UniversalModalComponent({ modalConfig }) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    //ak je naplneny config tak sa zobrazuje modal a ak nie je naplneny tak sa skryje
     useEffect(() => {
         modalConfig ? handleShow() : handleClose();
-
     }, [modalConfig])
 
     if (!modalConfig) return null;

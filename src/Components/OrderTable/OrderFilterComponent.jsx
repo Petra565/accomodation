@@ -1,20 +1,19 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
+import PriceTypeEnum from '../../Enums/PriceType';
+
+//Bootstrap
 import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
-import PriceTypeEnum from '../../Enums/PriceType';
 
 import moment from 'moment';
-
 import DatePicker from 'react-datepicker';
 
 function OrderFilterComponent({ loadFilterData }) {
     const [open, setOpen] = useState(false);
-
-
 
     const [filterData, setFilterData] = useState({
         firstName: '',
@@ -27,6 +26,7 @@ function OrderFilterComponent({ loadFilterData }) {
         departureDateTo: '',
     });
 
+    //po zmene parametra filtra ulozi hodnotu do objektu filterData
     const handleChangeFilter = (e) => {
         const { name, type, value, checked } = e.target;
         setFilterData((prevData) => ({
@@ -34,6 +34,8 @@ function OrderFilterComponent({ loadFilterData }) {
             [name]: type === 'checkbox' ? checked : value
         }));
     };
+
+    //resetovanie filtra
     const clearFilterData = () => {
         setFilterData({
             firstName: '',
@@ -63,7 +65,7 @@ function OrderFilterComponent({ loadFilterData }) {
                 </Button>
 
                 <Collapse in={open}>
-                    <div className="custom-collapse bg-white p-3 mb-3" id="example-collapse-text">
+                    <div className="custom-collapse mb-3 bg-white p-3" id="example-collapse-text">
                         <Row>
                             <Form.Group as={Col} className="mb-3" sm="6" lg="3" controlId="validationCustom01">
                                 <Form.Label>Meno</Form.Label>

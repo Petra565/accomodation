@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
+
+//Bootstrap
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
+//chart
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
@@ -10,11 +13,12 @@ import {
 function ChartComponent({ data,headerText }) {
     const [formatedData, setFormatedData] = useState([]);
 
+    //preformatovanie dát pre potreby graf komponentu
     useEffect(() => {
         let years = [];
 
         if (data) {
-            //IN vracia index - keby je OF vrati odany item
+            //IN vracia index - keby je OF vrati dany item
             for (let i in data.labels) {
                 years.push({
                     name: data.labels[i],

@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react'
-import { orderEditState } from '../../Services/CheckInServices'
-import UniversalModalComponent from '../../CommonComponents/UniversalModalComponent.jsx'
+﻿import { useState, useEffect } from 'react'
+import { orderEditState } from '../../../Services/CheckInServices'
+import UniversalModalComponent from '../../../Common/UniversalModalComponent.jsx'
+
+//Bootstrap
 import Badge from 'react-bootstrap/Badge';
 import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
@@ -12,39 +14,38 @@ import Form from 'react-bootstrap/Form';
 function CheckInComponent({ orderData, sendChangedDataFromCheckInTab, reloadOrdersTable }) {
     const [modalConfig, setModalConfig] = useState(null)
 
+    //otvori modal pre - oznacit za vybaveny
     const handleDoneCheckIn = () => {
         setModalConfig({
-            title: "Oznacit ako prijate",
+            title: "Označiť ako vybavený",
             btnCloseCallback: clearModalConfig,
-            text: "Naozaj chcete oznacit ako prijate?",
+            text: "Naozaj chcete označiť ako vybavený?",
             buttons: [
-                { text: 'Zavriet', variant: 'secondary', callback: clearModalConfig },
-                { text: 'Oznacit ako prijate', variant: 'primary', callback: callChangeCheckInState },
+                { text: 'Zavrieť', variant: 'secondary', callback: clearModalConfig },
+                { text: 'Áno', variant: 'primary', callback: () => changeCheckInState(orderData) },
             ]
         })
     }
 
+    //zatvori modal - precisti modalConfig
     const clearModalConfig = () => {
         setModalConfig(null)
     }
 
-    const callChangeCheckInState = () => {
-        setModalConfig(null)
-        changeCheckInState(orderData)
-    }
-
+    //sluzba pre oznacenie checkInu ako vybaveny (hostitelom)
     const changeCheckInState = (orderData) => {
         orderEditState(orderData)
             .then(data => {
                 sendChangedDataFromCheckInTab(data.order);
                 reloadOrdersTable()
-                console.log(data.order)
+                setModalConfig(null)
 
             }).catch(error => {
                 console.error('Error:', error);
             })
     }
 
+    //otvorenie checkIn formularu v novom okne
     const handleClick = () => {
         window.open('/CheckIn/' + orderData._id, '_blank');
     }
@@ -55,15 +56,15 @@ function CheckInComponent({ orderData, sendChangedDataFromCheckInTab, reloadOrde
                 <Col-2>
                     {
                         orderData.checkInData?.state == 'notFinished' &&
-                        <Badge className="mt-3 mx-2 fs-6 px-3 py-2" bg='danger'>Neprijaté údaje</Badge>
+                        <Badge className="fs-6 mx-2 mt-3 px-3 py-2" bg='danger'>Neprijaté údaje</Badge>
                     }
                     {
                         orderData.checkInData?.state == 'finishedByHost' &&
-                        <Badge className="mt-3 mx-2 fs-6 px-3 py-2" bg='success'>Vyplnené hostiteľom</Badge>
+                        <Badge className="fs-6 mx-2 mt-3 px-3 py-2" bg='success'>Vyplnené hostiteľom</Badge>
                     }
                     {
                         orderData.checkInData?.state == 'finishedByGuest' &&
-                        <Badge className="mt-3 mx-2 fs-6 px-3 py-2" bg='success'>Vyplnené hosťom</Badge>
+                        <Badge className="fs-6 mx-2 mt-3 px-3 py-2" bg='success'>Vyplnené hosťom</Badge>
                     }
                 </Col-2>
             </Row>

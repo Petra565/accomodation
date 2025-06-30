@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import CheckInFormComponent from '../CheckInFormComponents/CheckInFormComponent'
+﻿import { useState, useEffect } from 'react'
+import CheckInFormComponent from '../CheckInForm/CheckInFormComponent'
 import { useParams } from 'react-router-dom'
 import { checkInGet } from '../Services/CheckInServices'
 import { checkInCreate } from '../Services/CheckInServices'
@@ -10,7 +10,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-
 import Badge from 'react-bootstrap/Badge';
 import Stack from 'react-bootstrap/Stack';
 
@@ -23,10 +22,10 @@ function CheckInFormContainerComponent() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { id } = useParams();
-
     const [guestsData, setGuestsData] = useState([]);
     const [guestNote, setGuestNote] = useState('');
 
+    //na zaklade poctu hosti vytvori prazdne objekty do guestsData
     useEffect(() => {
         if (orderData.numberOfGuests) {
             /* Array(n).fill({}) vytvorí pole s n prvkami, kde každý je rovnaký objekt { }.*/
@@ -36,12 +35,14 @@ function CheckInFormContainerComponent() {
         }
     }, [orderData.numberOfGuests]);
 
+    //pri vzniku komponentu zavolaj nacitanie orderData
     useEffect(() => {
         if (id) {
             loadOrderData(id);
         }
     }, [id]);
 
+    //sluzba na nacitanie orderData
     const loadOrderData = (orderId) => {
         checkInGet(orderId)
             .then((data) => {
@@ -54,16 +55,14 @@ function CheckInFormContainerComponent() {
             });
     }
 
-    if (loading) return <p>Načítavam...</p>;
-    if (error) return <p>Chyba: {error.message}</p>;
-
-
+    //ak sa zmenia guestData v komponente jednotliveho hosta v nizsom komponente tak ich prepis do guestsData
     const handleChangeGuestData = (guest, i) => {
         let guestsDataCopy = [...guestsData]
         guestsDataCopy[i] = guest;
         setGuestsData(guestsDataCopy)
     }
 
+    //sluzba na odoslanie dat checkinu
     const handleSubmit = (event) => {
         const form = event.currentTarget;
         event.preventDefault();
@@ -84,17 +83,21 @@ function CheckInFormContainerComponent() {
                     console.error('Error:', error);
                 })
         }
-        setValidated(true);
 
+        setValidated(true);
     }
 
+    if (loading) return <p>Načítavam...</p>;
+    if (error) return <p>Chyba: {error.message}</p>;
+   
     return (
         <>
             {orderData.checkInData?.state === 'finishedByHost' &&
-                < Badge className="mt-3 mx-2 fs-6 px-3 py-2" bg='success'>Vyplnené hostiteľom</Badge >
+                < Badge className="fs-6 mx-2 mt-3 px-3 py-2" bg='success'>Vyplnené hostiteľom</Badge >
             }
+           
             {orderData.checkInData?.state === 'finishedByGuest' &&
-                < Badge className="mt-3 mx-2 fs-6 px-3 py-2" bg='success'>Vyplnené hosťom</Badge >
+                < Badge className="fs-6 mx-2 mt-3 px-3 py-2" bg='success'>Vyplnené hosťom</Badge >
             }
 
 
@@ -111,7 +114,7 @@ function CheckInFormContainerComponent() {
                                 sendNewGuestData={(data) => handleChangeGuestData(data, index)}
                             />
                         ))}
-                        <div className="border rounded p-4 mt-2 bg-white" >
+                        <div className="mt-2 rounded border bg-white p-4" >
                             <Row className="mb-1">
                                 <Form.Group as={Col} md="4">
                                     <Form.Label>Dátum príchodu</Form.Label>

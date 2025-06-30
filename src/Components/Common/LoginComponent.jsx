@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { login } from '../Services/LoginServices';
 
+//Bootstrap
 import { NavLink } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
@@ -15,6 +16,7 @@ function LoginComponent() {
         password: ""
     })
 
+    //po zmene hodnoty vo formulari ulozi do user objektu
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUser((prevData) => ({
@@ -23,6 +25,7 @@ function LoginComponent() {
         }));
     }
 
+    //potvrdenie prihlasenia - sluzba na prihlasenie
     const handleSubmit = (event) => {
         const form = event.currentTarget;
         event.preventDefault();
@@ -47,7 +50,7 @@ function LoginComponent() {
     
     return (
         <div className='d-flex justify-content-center'>
-            <div className="p-4 w-50">
+            <div className="w-50 p-4">
                 <h4>Prihlásenie</h4>
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                     <Row className="my-2">

@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+
+//Bootstrap
 import Table from 'react-bootstrap/Table';
 import Stack from 'react-bootstrap/Stack';
 import Row from 'react-bootstrap/Row';
